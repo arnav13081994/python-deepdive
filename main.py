@@ -1,11 +1,6 @@
-# Implement a class Rectangle with getter and setter methods and also implement
-# class instance methods like
-
-	# less than or equal to methods as well.
-
+# Implement a class Rectangle
 
 class Rectangle:
-
 	def __init__(self, height, width):
 		""" Initialises an instance of the Rectangle Class"""
 
@@ -50,6 +45,10 @@ class Rectangle:
 	def perimeter(self):
 		""" Returns the Perimeter of the Rectangle"""
 		return 2 * (self.width + self.height)
-	#
-	# def __le__(self, other):
-	# 	""" Implements the Less than or Equal to Operator"""
+
+	def __le__(self, other):
+		""" Implements the Less than or Equal to Operator"""
+		if not isinstance(other, Rectangle):
+			raise NotImplementedError("Please use an object of class <Rectangle> only")
+
+		return (self.width == other.width and self.height == other.height) or (self.area() < other.area())
