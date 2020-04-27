@@ -1,20 +1,9 @@
-def time_it(fn, *args, **kwargs):
-	""" Returns the time taken to run the function"""
-	import time
-	t0 = time.time()
+"""
+Question: https://www.pythonmorsels.com/exercises/cb8fbdd52cf14f8cb31df4f06343cccf/
 
-	# Execute the function
-	fn(*args, **kwargs)
+"""
 
-	t1 = time.time()
-	time = t1 - t0
-
-	return time
-
-
-# Question: https://www.pythonmorsels.com/exercises/cb8fbdd52cf14f8cb31df4f06343cccf/
-
-
+# Solution #1
 def add(*matrices_tuple):
 	""" Given n matrices of the same size this function will do an elementwise addition
 	 and return the nex matrix
@@ -55,3 +44,25 @@ def add_ind_mat(mat1, mat2):
 		lst2.append(lst)
 
 	return lst2
+
+
+# Solution #2
+
+
+
+
+
+
+# Solution #3
+
+
+
+
+
+
+
+# Benchmark Results
+from python_problems.timer import time_it
+
+
+time_it(print, 'abc', n=5)
