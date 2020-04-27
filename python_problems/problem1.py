@@ -1,4 +1,5 @@
 """
+
 Question: https://www.pythonmorsels.com/exercises/cb8fbdd52cf14f8cb31df4f06343cccf/
 
 """
@@ -78,6 +79,6 @@ def add_ind_mat_v2(mat1, mat2):
 
 # Benchmark Results
 from python_problems.timer import time_it
-
-
-time_it(print, 'abc', n=5)
+#
+#
+# time_it(print, 'abc', n=5)
