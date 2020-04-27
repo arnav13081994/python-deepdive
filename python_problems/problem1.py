@@ -18,7 +18,7 @@ def add(*matrices_tuple):
 	# We not only need to check that the 2 lists have the same number of matrices but also that every matrix has the same
 	# number of elements at the corresponding locations in the list of lists passed
 
-	matrix_len_lst = [
+	matrix_len_lst = (
 
 		all([
 			(
@@ -29,7 +29,7 @@ def add(*matrices_tuple):
 		])
 
 		for matrix_of_matrix in matrices_tuple
-	]
+	)
 
 	if all(matrix_len_lst):
 		return reduce(add_ind_mat_v1, matrices_tuple)
