@@ -22,8 +22,8 @@ def add(*matrices_tuple):
 
 		all([
 			(
-					len(matrix_of_matrix[0]) == len(element)
-					and len(matrices_tuple[0]) == len(matrix_of_matrix) or raise_ValError()
+					len(matrix_of_matrix[0]) == len(element) and len(matrices_tuple[0]) == len(matrix_of_matrix)
+					or raise_ValError()
 			)
 			for element in matrix_of_matrix
 		])
