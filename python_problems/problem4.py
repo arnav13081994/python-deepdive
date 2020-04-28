@@ -14,7 +14,7 @@ return [0, 1].
 """
 # Solution #1
 
-def twoSum(nums_list, target):
+def twoSum_v1(nums_list, target):
 	""" Given the list of numbers and the target return the index of 2 numbers in nums_list
 	that add up exactly to the target. There would be exactly 1 solution.
 	"""
@@ -39,4 +39,27 @@ def twoSum(nums_list, target):
 		dic_copy[index] = number
 
 	else:
-		print("Not Found")
+		return []
+
+
+
+
+#  Solution# 2
+
+def twoSum_v2(nums_list, target):
+	""" Given the list of numbers and the target return the index of 2 numbers in nums_list
+	that add up exactly to the target. There would be exactly 1 solution.
+	"""
+	dic_checked = {}
+	for index, number in enumerate(nums_list):
+		to_find = target - number
+
+		if to_find in dic_checked:
+			return [index, dic_checked[to_find]]
+
+		else:
+			dic_checked[number] = index
+	else:
+		return []
+
+
