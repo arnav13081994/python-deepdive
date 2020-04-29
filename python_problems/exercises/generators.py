@@ -55,8 +55,20 @@ def interleave(l1, l2):
     return (ee for e in zip(l1, l2) for ee in e)
 
 
-def translate():
+def translate(sentence):
     """Return a transliterated version of the given sentence."""
+    words = {
+        'esta': 'is',
+        'la': 'the',
+        'en': 'in',
+        'gato': 'cat',
+        'casa': 'house',
+        'el': 'the'
+    }
+
+    ans = (words[word] for word in sentence.split() if word in words)
+    return " ".join(ans)
+
 
 
 def parse_ranges(a):
