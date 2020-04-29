@@ -4,6 +4,8 @@
 def is_prime(num):
     """Return True if candidate number is prime."""
     return all(num % n for n in range(2, num))
+
+
 def first_prime_over(num):
     """Return the first prime number over a given number."""
     # According to Bertrand postulate there will exist a prime number b/w n and 2n
@@ -11,6 +13,8 @@ def first_prime_over(num):
     for number in lst:
         if is_prime(number):
             return number
+
+
 def first_prime_over_v2(num):
     """Return the first prime number over a given number."""
     number = num + 1
@@ -18,10 +22,14 @@ def first_prime_over_v2(num):
         if is_prime(number):
             return number
         number += 1
+
+
 def all_together(*args):
     """String together all items from the given iterables."""
     # Needs to return a generator exp.
     return (e for iterable in args for e in iterable)
+
+
 def is_anagram(w1, w2):
     """Return True if the given words are anagrams."""
     """ Spaces, case need to be ignored. Lengths need to be the same"""
@@ -40,14 +48,25 @@ def is_anagram(w1, w2):
             return False
     else:
         return True
+
+
 def interleave(l1, l2):
     """Return iterable of one item at a time from each list."""
     return (ee for e in zip(l1, l2) for ee in e)
+
+
 def translate():
     """Return a transliterated version of the given sentence."""
 
 
-def parse_ranges():
+def parse_ranges(a):
     """Return a list of numbers corresponding to number ranges in a string"""
 
+    ans = (
+        range(
+            int(e.split('-')[0]), 1 + int(e.split('-')[1])
+        )
+        for e in a.split(',')
+    )
+    return (j for i in ans for j in i)
 
