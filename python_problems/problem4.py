@@ -44,7 +44,7 @@ def twoSum_v1(nums_list, target):
 
 
 
-#  Solution# 2
+#  Solution #2
 
 def twoSum_v2(nums_list, target):
 	""" Given the list of numbers and the target return the index of 2 numbers in nums_list
@@ -61,5 +61,3 @@ def twoSum_v2(nums_list, target):
 			dic_checked[number] = index
 	else:
 		return []
-
-
