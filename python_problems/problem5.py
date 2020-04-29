@@ -60,7 +60,7 @@ def twoSum(nums_list, target):
 		return []
 
 
-# Come up with a solution that works for k numbers. Probably use recursion. Divide and conquer.
+# TODO Come up with a solution that works for k numbers. Probably use recursion. Divide and conquer.
 #   Base cases: k=0, k=1, k=2, O(n) <= n**2 where n are the number of elements in the array.
 
 
