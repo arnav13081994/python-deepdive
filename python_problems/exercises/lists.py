@@ -19,9 +19,7 @@ def flatten(a):
 
 def reverse_difference(lst):
     """Return list subtracted from the reverse of itself."""
-    reverse_lst = lst.copy()
-    reverse_lst.reverse()
-    return [a-b for a, b in zip(lst, reverse_lst)]
+    return [a-b for a, b in zip(lst, lst[::-1])]
 
 def matrix_add(m1, m2):
     """Add corresponding numbers in given 2-D matrices."""
