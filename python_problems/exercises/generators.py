@@ -22,27 +22,12 @@ def all_together(*args):
     """String together all items from the given iterables."""
     # Needs to return a generator exp.
     return (e for iterable in args for e in iterable)
-
-
-def interleave(l1, l2):
-    """Return iterable of one item at a time from each list."""
-# return [q[0] for num in zip(l1, l2) for q in zip(num)]
-
-
-def translate():
-    """Return a transliterated version of the given sentence."""
-
-
-def parse_ranges():
-    """Return a list of numbers corresponding to number ranges in a string"""
-
-
 def is_anagram(w1, w2):
     """Return True if the given words are anagrams."""
     """ Spaces, case need to be ignored. Lengths need to be the same"""
-    punct = ["'", ".", "!", "?", ",", ":", ";"]
-    w1 = [w.lower() for w in w1 if w != ' ' and w not in punct]
-    w2 = [w.lower() for w in w2 if w != ' ' and w not in punct]
+    punct = ["'", ".", "!", "?", ",", ":", ";", " "]
+    w1 = [w.lower() for w in w1 if w not in punct]
+    w2 = [w.lower() for w in w2 if w not in punct]
 
     if len(w1) != len(w2):
         return False
@@ -55,3 +40,14 @@ def is_anagram(w1, w2):
             return False
     else:
         return True
+def interleave(l1, l2):
+    """Return iterable of one item at a time from each list."""
+    return (ee for e in zip(l1, l2) for ee in e)
+def translate():
+    """Return a transliterated version of the given sentence."""
+
+
+def parse_ranges():
+    """Return a list of numbers corresponding to number ranges in a string"""
+
+
