@@ -4,7 +4,6 @@ import unittest
 from more import (flip_dict, get_ascii_codes, dict_from_truple,
                   dict_from_tuple, get_all_factors)
 
-
 class GetASCIICodeTests(unittest.TestCase):
 
     """Tests for get_ascii_codes."""
@@ -19,8 +18,6 @@ class GetASCIICodeTests(unittest.TestCase):
             'bye': [98, 121, 101],
         }
         self.assertEqual(get_ascii_codes(words), outputs)
-
-
 class GetAllFactorsTests(unittest.TestCase):
 
     """Tests for get_all_factors."""
@@ -34,8 +31,6 @@ class GetAllFactorsTests(unittest.TestCase):
         inputs = {62, 293, 314}
         outputs = {62: [1, 2, 31, 62], 293: [1, 293], 314: [1, 2, 157, 314]}
         self.assertEqual(get_all_factors(inputs), outputs)
-
-
 class FlipDictTests(unittest.TestCase):
 
     """Tests for flip_dict."""
@@ -52,8 +47,6 @@ class FlipDictTests(unittest.TestCase):
             '2015-09-14': 'Java',
         }
         self.assertEqual(flip_dict(inputs), outputs)
-
-
 class DictFromTrupleTests(unittest.TestCase):
 
     """Tests for dict_from_truple."""
@@ -62,8 +55,6 @@ class DictFromTrupleTests(unittest.TestCase):
         inputs = [(1, 2, 3), (4, 5, 6), (7, 8, 9)]
         outputs = {1: (2, 3), 4: (5, 6), 7: (8, 9)}
         self.assertEqual(dict_from_truple(inputs), outputs)
-
-
 class DictFromTupleTests(unittest.TestCase):
 
     """Tests for dict_from_tuple."""
