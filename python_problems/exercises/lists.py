@@ -29,6 +29,7 @@ def get_factors(n):
 
 
 #  TODO Come up with a much better implementation using hashmaps and also make sure the triplets are unique
+# https://pycon2018.trey.io/list-comprehensions.html#pythagorean-triples
 def triples(num):
     """Return list of Pythagorean triples less than input num."""
     # lst_seen = []
