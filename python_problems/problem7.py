@@ -19,7 +19,7 @@ def twosum(lst, target_sum):
     ]
 
 
-def triples_v2(num):
+def triples(num):
     """Return list of Pythagorean triples less than input num."""
     lst = [i ** 2 for i in range(1, num)]
     ans = []
