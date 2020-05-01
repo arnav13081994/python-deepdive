@@ -27,10 +27,7 @@ def get_factors(n):
     """Return a list of all factors of the given number."""
     return [number for number in range(1, n + 1) if not n % number]
 
-
-#  TODO Come up with a much better implementation using hashmaps and also make sure the triplets are unique
-# https://pycon2018.trey.io/list-comprehensions.html#pythagorean-triples
-def triples(num):
+def triples_v1(num):
     """Return list of Pythagorean triples less than input num."""
     # lst_seen = []
     ans = []
