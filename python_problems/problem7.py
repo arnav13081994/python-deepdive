@@ -10,7 +10,7 @@ A Pythagorean triple is a group of 3 integers a, b, and c, such that they satisf
 
 
 def twosum(lst, target_sum):
-    """ Given a list of numbers and a target sum, return all unique doubles that add up to that sum"""
+    """ Given a list of numbers and a target sum, return all doubles that add up to that sum"""
 
     return [
         [i, target_sum - i]
