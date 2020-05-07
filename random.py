@@ -17,7 +17,7 @@ def add(a, b):
 	return a + b
 
 
-class dec_fact:
+class Dec_Fact:
 
 	def __init__(self, a, b):
 		self.a = a
@@ -27,10 +27,9 @@ class dec_fact:
 		def inner(*args, **kwargs):
 			print("About to run the function {0} and {1}".format(self.a, self.b))
 			return f(*args, **kwargs)
-
 		return inner
 
 
 if __name__ == "__main__":
-	add = dec_fact(10, 20)(add)
+	add = Dec_Fact(10, 20)(add)
 	print(add(1, 5))
