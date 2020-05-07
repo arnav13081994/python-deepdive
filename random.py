@@ -13,10 +13,6 @@ def dec_fact1(a, b):
 	return dec
 
 
-def add(a, b):
-	return a + b
-
-
 class Dec_Fact:
 
 	def __init__(self, a, b):
@@ -30,6 +26,10 @@ class Dec_Fact:
 		return inner
 
 
+@Dec_Fact(10, 20)
+def add(a, b):
+	return a + b
+
+
 if __name__ == "__main__":
-	add = Dec_Fact(10, 20)(add)
 	print(add(1, 5))
