@@ -40,21 +40,23 @@ def threesum(lst, target_sum):
 	return ans
 
 # TODO Need ot debug. For some reason it is not working properly for size > 6. Either throws an error or returns the wrong answer.
-
+# TODO There is a bug. The constructed sub-arrays should also be restricted to use the elements as many ties as they occur in the parent array.
 def ksum(lst, target_sum, target_size):
 	"""Given a list of numbers and a target sum, return all quadruples that add up to that sum"""
-
+	index = -1
 	for num in lst:
 		target_size -= 1
 		target_sum -= num
-		print("Target Size:", target_size, "Target Sum:", target_sum, "Target Num:", num, "list:", lst)
+		index += 1
+		lst_new = lst[:index] + lst[index+1:]
+		print("Target Size:", target_size, "Target Sum:", target_sum, "Target Num:", num, "list:", lst_new)
 
 		if target_size == 3:
-			ans = [lst + [num] for lst in threesum(lst, target_sum)]
+			ans = [lst + [num] for lst in threesum(lst_new, target_sum)]
 			print("Ans for size 3:", ans)
 			return ans
 		else:
-			ans = [lst + [num] for lst in ksum(lst, target_sum, target_size)]
+			ans = [lst + [num] for lst in ksum(lst_new, target_sum, target_size)]
 			ans = return_unique_members(ans)  # Remove duplicate iterables in the list
 			ans = [tuple(lst) for lst in ans]  # Convert the iterables in the list to tuples
 			return ans
