@@ -16,15 +16,19 @@ def matrix_from_string(string):
 def parse_csv(file_obj):
     """Return namedtuple list representing data from given file object."""
     csv_reader = csv.reader(file_obj)
-    Row = namedtuple('Row', next(csv_reader))
+    Row = namedtuple('Row', next(csv_reader)) # This will return the Row NamedTuple class with attribute names of the header row
+
+    # Now need to create instances of all rows in the Row class
+    return [Row(next(csv_reader)) for row in csv_reader]
 
 
 def get_cards():
     """Create a list of namedtuples representing a deck of playing cards."""
     Card = namedtuple('Card', 'rank suit')
-    ranks = ['A'] + [] + ['J', 'Q', 'K']
+    ranks = ['A'] + [str(i) for i in range(2, 11)] + ['J', 'Q', 'K']
     suits = ['spades', 'hearts', 'diamonds', 'clubs']
-    return [Card('A', 'spades')]
+
+    return [Card(rank, suit) for suit in suits for rank in ranks]
 
 
 def shuffle_cards(deck):
@@ -34,3 +38,6 @@ def shuffle_cards(deck):
 
 def deal_cards(deck, count=5):
     """Remove the given number of cards from the deck and returns them"""
+
+    return [deck.pop() for _ in range(count)]
+
