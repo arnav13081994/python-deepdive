@@ -12,14 +12,13 @@ def matrix_from_string(string):
         for strings in string.split('\n')
     ]
 
-#  TODO Attempt after you have finished the section on named tuples https://pycon2018.trey.io/when-to-use.html#memory-efficient-csv
 def parse_csv(file_obj):
     """Return namedtuple list representing data from given file object."""
     csv_reader = csv.reader(file_obj)
     Row = namedtuple('Row', next(csv_reader)) # This will return the Row NamedTuple class with attribute names of the header row
 
     # Now need to create instances of all rows in the Row class
-    return [Row(next(csv_reader)) for row in csv_reader]
+    return [Row(*row) for row in csv_reader]
 
 
 def get_cards():
