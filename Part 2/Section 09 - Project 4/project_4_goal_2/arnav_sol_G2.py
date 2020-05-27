@@ -2,7 +2,7 @@ import csv
 import os
 from collections import namedtuple
 import datetime
-
+from itertools import groupby, islice
 
 file_names = (
 
@@ -14,7 +14,6 @@ file_names = (
 
 
 def file_iter(file_name):
-
 	file_path = os.path.join(os.path.dirname(__file__), 'data', file_name)
 
 	with open(file_path) as f:
@@ -31,6 +30,7 @@ def clean_data(file_iter):
 		data.append(row)
 	yield data
 
+
 def cast_data(row, header):
 	data_lst = []
 
@@ -41,19 +41,39 @@ def cast_data(row, header):
 			(h, minute, s) = time.split(':')
 			data = datetime.datetime(int(y), int(m), int(d), int(h), int(minute), int(s[:-1]))
 		elif data_type == 'model_year':
-			data = datetime.datetime(int(data), 1, 1) # Defaulting to Jan 1 of that year for the car model
+			data = datetime.datetime(int(data), 1, 1)  # Defaulting to Jan 1 of that year for the car model
 
 		else:
 			data = str(data)
 
 		data_lst.append(data)
-
-	print("cleaned data row:", data_lst)
-
 	return data_lst
 
+
 if __name__ == "__main__":
-	next(file_iter(file_names[0]))
-	#
-	# for f_name in file_names:
-	# 	next(file_iter(f_name))
+	data = []
+	dic = dict()
+
+	for f_name in file_names:
+		data.extend(next(file_iter(f_name)))
+
+	# Sort data by ssn for groupby to work properly
+	data.sort(key=lambda x: x.ssn)
+
+	# We need to refer to the ssn field in the big lst data and then groupby on that as key and combine them all into
+	# another iterable.
+	grouped = groupby(data, key=lambda x: x.ssn)
+
+	data = []
+	print(hex(id(data)))
+	for key, groups in grouped:
+
+		for group in groups:
+			dic = {**dic, **group._asdict()}
+
+		tup = namedtuple('DATA', list(dic.keys()))
+		data.append(tup(**dic))
+
+
+	for ind, dat in enumerate(data):
+		print(f"row:{ind+1}, {dat}")
