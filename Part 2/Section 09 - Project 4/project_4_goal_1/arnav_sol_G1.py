@@ -61,7 +61,7 @@ def run(file_names):
 
 if __name__ == "__main__":
 	tracemalloc.start()
-	print(timeit('run(file_names)', globals=globals(), number=10), 'seconds')
+	print(timeit('run(file_names)', globals=globals(), number=100), 'seconds')
 
 	stats = tracemalloc.take_snapshot().statistics('lineno')
 	print(stats[0].size/1024, 'kb')

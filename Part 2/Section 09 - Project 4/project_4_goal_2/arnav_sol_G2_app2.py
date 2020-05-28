@@ -4,7 +4,8 @@ import os
 from collections import namedtuple
 import tracemalloc
 from timeit import timeit
-
+from functools import partial
+from itertools import islice, groupby
 
 file_names = (
 
@@ -13,7 +14,6 @@ file_names = (
 	'update_status.csv',
 	'vehicles.csv',
 )
-
 
 
 def file_iter(file_name):
@@ -76,14 +76,44 @@ def run(file_names):
 	return data
 
 
+def return_records_after(data, date):
+	""" All records that have been updated after date will be returned"""
+
+	# Convert date into datetime object and filter the data
+	(m, d, y) = date.split('/')
+	date = datetime.datetime(int(y), int(m), int(d))
+
+	return data.last_updated > date
+
 
 if __name__ == "__main__":
 	tracemalloc.start()
 
 	data_dic = {}
-	print(timeit('run(file_names)', globals=globals(), number=10), 'seconds')
+	print(timeit('data = run(file_names)', globals=globals(), number=1), 'seconds')
 
 	stats = tracemalloc.take_snapshot().statistics('lineno')
 	print(stats[0].size/1024, 'kb')
 
+	data = run(file_names)
 
+	# Only return records after date.
+	return_records_after = partial(return_records_after, date='1/1/2017')
+	curr_records = filter(return_records_after, data)  # This is an iterator
+
+	# Return largest car makes for each gender
+
+
+	# Remember we need to sort the data before we can group it since it needs to find the data consecutively.
+	data.sort(key=lambda x: (x.gender, x.vehicle_make))
+
+	grouped = groupby(data, key=lambda x: (x.gender, x.vehicle_make))
+
+	car_dic = dict(Male={}, Female={})
+
+	for key, groups in grouped:
+		car_dic[key[0]] = {**car_dic[key[0]], **{key[1]: sum([1 for group in groups])}}
+
+	for key, val in car_dic.items():
+		vehicle_make = sorted(car_dic[key], reverse=True, key=lambda x: car_dic[key][x])[0]
+		print(key, vehicle_make, car_dic[key][vehicle_make])
