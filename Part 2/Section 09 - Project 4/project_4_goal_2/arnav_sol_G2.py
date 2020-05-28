@@ -69,6 +69,7 @@ def run(file_names):
 	# another iterable.
 	grouped = groupby(data, key=lambda x: x.ssn)
 
+	data.clear()
 	data = []
 	for key, groups in grouped:
 

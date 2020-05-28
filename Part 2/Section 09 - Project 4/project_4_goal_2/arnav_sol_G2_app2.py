@@ -28,12 +28,14 @@ def clean_data(file_iter):
 	global data_dic
 	for row in file_iter:
 		row = cast_data(row)  # This will get back the cleaned and correct format data.
-		try:
+
+		if data_dic.get(row['ssn']):
 			data_dic[row['ssn']] = {**data_dic[row['ssn']], **row}
 
-		except KeyError:
+		else:
 			# This means that this is the first time this SSN will be encountered
 			data_dic[row['ssn']] = row
+
 
 	# stats = tracemalloc.take_snapshot().statistics('lineno')
 	# print(stats[0].size / 1024, 'kb')
@@ -90,7 +92,8 @@ if __name__ == "__main__":
 	tracemalloc.start()
 
 	data_dic = {}
-	print(timeit('data = run(file_names)', globals=globals(), number=1), 'seconds')
+	for number in [1, 10, 20, 40, 80, 160]:
+		print(timeit('data = run(file_names)', globals=globals(), number=number), f'seconds for {number} iters')
 
 	stats = tracemalloc.take_snapshot().statistics('lineno')
 	print(stats[0].size/1024, 'kb')
