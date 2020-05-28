@@ -59,15 +59,21 @@ def cast_data(row):
 if __name__ == "__main__":
 	data_dic = {}
 	data = []
+
+	# This will populate the data_dic dictionary with ssn values as keys for any number of files.
+	# My code does not assume that every ssn is in every file, and 1 file can have ssn repeated as well.
+	# The order of files will just overwrite data in the final data_dic dictionary.
+
 	for file_name in file_names:
 		next(file_iter(file_name))
 
-	for val in data_dic.values():
-		tup = namedtuple('Tup', list(val.keys()))
-		break
-
 	for ssn, row in data_dic.items():
-		data.append(tup(**row))
+		# Note in python 3, dict.items() is a view and is evaluated lazily.
+		try:
+			data.append(tup(**row))
+		except NameError:
+			tup = namedtuple('Tup', list(row.keys()))
+
 
 	for ind, dat in enumerate(data):
 		print(f"row:{ind+1}, {dat}")
