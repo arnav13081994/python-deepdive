@@ -23,23 +23,18 @@ def file_iter(file_name):
 		yield from clean_data(file_reader)
 
 
+
+
+
 def clean_data(file_iter):
 	""""""
 	global data_dic
 	for row in file_iter:
 		row = cast_data(row)  # This will get back the cleaned and correct format data.
+		# Insert key in dict with defaut value only if it is not present. If present, do nothing
+		data_dic.setdefault(row['ssn'], row)
 
-		if data_dic.get(row['ssn']):
-			data_dic[row['ssn']] = {**data_dic[row['ssn']], **row}
-
-		else:
-			# This means that this is the first time this SSN will be encountered
-			data_dic[row['ssn']] = row
-
-
-	# stats = tracemalloc.take_snapshot().statistics('lineno')
-	# print(stats[0].size / 1024, 'kb')
-
+		data_dic[row['ssn']] = {**data_dic[row['ssn']], **row}
 	yield data_dic
 
 
@@ -92,13 +87,14 @@ if __name__ == "__main__":
 	tracemalloc.start()
 
 	data_dic = {}
-	for number in [1, 10, 20, 40, 80, 160]:
+	for number in [1, 10, 20, 40, 80]:
 		print(timeit('data = run(file_names)', globals=globals(), number=number), f'seconds for {number} iters')
 
 	stats = tracemalloc.take_snapshot().statistics('lineno')
 	print(stats[0].size/1024, 'kb')
 
 	data = run(file_names)
+	print(data)
 
 	####### Only return records after date.
 	return_records_after = partial(return_records_after, date='1/1/2017')
