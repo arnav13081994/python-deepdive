@@ -77,3 +77,25 @@ if __name__ == "__main__":
 
 	for ind, dat in enumerate(data):
 		print(f"row:{ind+1}, {dat}")
+
+
+
+# TODO Another algo specifically for goal 2.
+
+# 1) Go through every file and just get the heads and combine them into a list and create a numed tuple. Easy way would to combine all heads, convert into set and then back.
+	# Also make sure to keep track of individual heads in each file as that would be used to make sure the final named tuple has correct data entered.
+	# Also use the defaults parameter = (None, ) * len(headers) to create defaults for other values that would eventually get filled.
+# 2) Since csv.reader returns an iterator we can just pick up where we left off.
+# 3) Now, iterate over the rows of ery file and check if an entry for that ssn in the data lst of named tuples exists or not, if exists update it, otherwise add it!
+# 4) Repeat step 3) for all files.
+# 5) Time approach #1 and approach #2 and see if the second approach is faster or not and what's the RAM footprint.
+
+
+
+file_names = (
+
+	'employment.csv',
+	'personal_info.csv',
+	'update_status.csv',
+	'vehicles.csv',
+)
