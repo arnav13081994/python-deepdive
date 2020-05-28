@@ -79,6 +79,12 @@ def run(file_names):
 
 
 if __name__ == "__main__":
-	data = run(file_names)
-	print(timeit('data = run(file_names)', globals=globals(), number=100))
+	tracemalloc.start()
+	print(timeit('run(file_names)', globals=globals(), number=10))
+
+	snapshot = tracemalloc.take_snapshot()
+	stats = snapshot.statistics('lineno')
+
+	for stat in stats[:2]:
+		print(stat)
 
