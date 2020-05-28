@@ -97,11 +97,11 @@ if __name__ == "__main__":
 
 	data = run(file_names)
 
-	# Only return records after date.
+	####### Only return records after date.
 	return_records_after = partial(return_records_after, date='1/1/2017')
 	curr_records = filter(return_records_after, data)  # This is an iterator
 
-	# Return largest car makes for each gender
+	####### Return largest car makes for each gender
 
 
 	# Remember we need to sort the data before we can group it since it needs to find the data consecutively.
