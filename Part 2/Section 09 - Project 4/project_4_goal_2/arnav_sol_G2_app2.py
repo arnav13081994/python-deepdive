@@ -2,6 +2,9 @@ import csv
 import datetime
 import os
 from collections import namedtuple
+import tracemalloc
+from timeit import timeit
+
 
 file_names = (
 
@@ -56,14 +59,8 @@ def cast_data(row):
 	return row
 
 
-if __name__ == "__main__":
-	data_dic = {}
+def run(file_names):
 	data = []
-
-	# This will populate the data_dic dictionary with ssn values as keys for any number of files.
-	# My code does not assume that every ssn is in every file, and 1 file can have ssn repeated as well.
-	# The order of files will just overwrite data in the final data_dic dictionary.
-
 	for file_name in file_names:
 		next(file_iter(file_name))
 
@@ -73,10 +70,11 @@ if __name__ == "__main__":
 			data.append(tup(**row))
 		except NameError:
 			tup = namedtuple('Tup', list(row.keys()))
+	return data
 
 
-	for ind, dat in enumerate(data):
-		print(f"row:{ind+1}, {dat}")
 
-
+if __name__ == "__main__":
+	data_dic = {}
+	print(timeit('data = run(file_names)', globals=globals(), number=100))
 
