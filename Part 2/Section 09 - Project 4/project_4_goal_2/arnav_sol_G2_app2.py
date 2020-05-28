@@ -32,9 +32,8 @@ def clean_data(file_iter):
 	for row in file_iter:
 		row = cast_data(row)  # This will get back the cleaned and correct format data.
 		# Insert key in dict with defaut value only if it is not present. If present, do nothing
-		data_dic.setdefault(row['ssn'], row)
-
-		data_dic[row['ssn']] = {**data_dic[row['ssn']], **row}
+		value = data_dic.setdefault(row['ssn'], row)
+		data_dic[row['ssn']] = {**value, **row}
 	yield data_dic
 
 
@@ -94,7 +93,6 @@ if __name__ == "__main__":
 	print(stats[0].size/1024, 'kb')
 
 	data = run(file_names)
-	print(data)
 
 	####### Only return records after date.
 	return_records_after = partial(return_records_after, date='1/1/2017')
@@ -116,3 +114,7 @@ if __name__ == "__main__":
 	for key, val in car_dic.items():
 		vehicle_make = sorted(car_dic[key], reverse=True, key=lambda x: car_dic[key][x])[0]
 		print(key, vehicle_make, car_dic[key][vehicle_make])
+
+	#
+	# for ind, dat in enumerate(data):
+	# 	print(ind, dat)
