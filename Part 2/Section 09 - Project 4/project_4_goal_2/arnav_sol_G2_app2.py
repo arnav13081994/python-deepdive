@@ -35,6 +35,9 @@ def clean_data(file_iter):
 			# This means that this is the first time this SSN will be encountered
 			data_dic[row['ssn']] = row
 
+	# stats = tracemalloc.take_snapshot().statistics('lineno')
+	# print(stats[0].size / 1024, 'kb')
+
 	yield data_dic
 
 
@@ -78,11 +81,9 @@ if __name__ == "__main__":
 	tracemalloc.start()
 
 	data_dic = {}
-	print(timeit('run(file_names)', globals=globals(), number=10))
+	print(timeit('run(file_names)', globals=globals(), number=10), 'seconds')
 
-	snapshot = tracemalloc.take_snapshot()
-	stats = snapshot.statistics('lineno')
+	stats = tracemalloc.take_snapshot().statistics('lineno')
+	print(stats[0].size/1024, 'kb')
 
-	for stat in stats[:2]:
-		print(stat)
 

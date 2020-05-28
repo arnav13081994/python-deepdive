@@ -30,6 +30,9 @@ def clean_data(file_iter):
 	for row in file_iter:
 		row = data_tup(*cast_data(row, header))
 		data.append(row)
+	# stats = tracemalloc.take_snapshot().statistics('lineno')
+	# print(stats[0].size / 1024, 'kb')
+
 	yield data
 
 
@@ -80,11 +83,7 @@ def run(file_names):
 
 if __name__ == "__main__":
 	tracemalloc.start()
-	print(timeit('run(file_names)', globals=globals(), number=10))
+	print(timeit('run(file_names)', globals=globals(), number=10), 'seconds')
 
-	snapshot = tracemalloc.take_snapshot()
-	stats = snapshot.statistics('lineno')
-
-	for stat in stats[:2]:
-		print(stat)
-
+	stats = tracemalloc.take_snapshot().statistics('lineno')
+	print(stats[0].size/1024, 'kb')
