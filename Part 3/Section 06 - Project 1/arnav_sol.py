@@ -1,49 +1,52 @@
-def validate(data, template):
+def validate(data, template, path=[]):
 	"""    implement and return True/False
     in the case of False, return a string describing
     the first error encountered
     in the case of True, string can be empty
-
     """
-
 	for key, value in template.items():
 
 		if key not in data:
-			return False, KeyError(f"Key: {key} is not present")
+			path += [key]
+			return False, KeyError(f"Key: {'.'.join(path)} is not present")
 
 		if not isinstance(value, dict):
 			# This is the case of single data type checking
-			if not isinstance(data[key], value):  # value != type(data[key]):
-				return False, TypeError(f"Expected Type: {value} for key: {key}. Received: {type(data[key])}")
+			if not isinstance(data[key], value):
+				path += [key]
+				return False, TypeError(
+					f"Expected Type: {value} for key: {'.'.join(path)}. Received: {type(data[key])}")
 		elif isinstance(value, dict):
 
-			state, error = validate(data[key], value)
+			path += [key]
+			state, error = validate(data[key], value, path=path)
 			if not state:
 				return state, error
+			else:
+				path.pop()
 
 	return True, ''
 
 
 if __name__ == "__main__":
 	data = {
-		'user_id': 100,
+		'user_id': 102,
 		'name': {
-			'first': 'John',
-			'last': 'Cleese'
+			'first': 'Michael',
+			'last': 'Palin'
 		},
 		'bio': {
 			'dob': {
-				'year': 1939,
-				'month': 11,
-				'day': 27
+				'year': 1943,
+				'month': 'May',
+				'day': 5
 			},
 			'birthplace': {
 				'country': 'United Kingdom',
-				'city': 'Weston-super-Mare'
+				'city': 'Sheffield'
 			}
 		}
 	}
-
 	template = {
 		'user_id': int,
 		'name': {
