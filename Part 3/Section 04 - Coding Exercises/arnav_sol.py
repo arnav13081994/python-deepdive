@@ -1,3 +1,8 @@
+
+from functools import reduce
+
+
+
 def sort_dict_by_val(d, reverse=False):
 	return dict(sorted(d.items(), key=lambda x: x[1], reverse=reverse))
 def func(d1, d2):
@@ -12,12 +17,24 @@ def combine_dicts(*dictionaries):
 			d[k] = d.get(k, 0) + v
 
 	return sort_dict_by_val(d, reverse=True)
-def get_data(*dicts):
-	d = dicts[0]
 
-	union_keys = set(d.keys()).union(*dicts[1:])
-	intersection_keys = set(d.keys()).intersection(*dicts[1:])
-	common_keys = union_keys - intersection_keys
+
+
+def get_data(*dicts):
+
+	common_keys = reduce(lambda x, y: set(x).union(y) - set(x).intersection(y), dicts)
+	result = dict.fromkeys(common_keys)
+
+	for key in common_keys:
+		tup = ()
+		for dic in dicts:
+			tup += (dic.get(key, 0),)
+
+		result[key] = tup
+
+def get_data_v2(*dicts):
+
+	common_keys = reduce(lambda x, y: set(x).symmetric_difference(y), dicts)
 	result = dict.fromkeys(common_keys)
 
 	for key in common_keys:
