@@ -1,14 +1,15 @@
-def validate(data, template, path=[]):
+def validate(data, schema, path=[]):
 	"""    implement and return True/False
     in the case of False, return a string describing
     the first error encountered
     in the case of True, string can be empty
     """
-	for key, value in template.items():
+	for key, value in schema.items():
 
 		if key not in data:
 			raise KeyError(f"Key: {'.'.join(path + [key])} is not present")
 
+		# if not (isinstance(value, dict) or isinstance(data[key], value)):
 		if not isinstance(value, dict) and not isinstance(data[key], value):
 			raise TypeError(
 				f"Expected Type: {value} for key: {'.'.join(path + [key])}. Received: {type(data[key])}")
@@ -20,7 +21,7 @@ def validate(data, template, path=[]):
 
 
 if __name__ == "__main__":
-	template = {
+	schema = {
 		'user_id': int,
 		'name': {
 			'first': str,
@@ -92,6 +93,6 @@ if __name__ == "__main__":
 		}
 	}
 
-	print(validate(john, template))
-	print(validate(eric, template))
-	print(validate(michael, template))
+	print(validate(john, schema))
+	print(validate(eric, schema))
+	print(validate(michael, schema))
