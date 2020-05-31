@@ -33,7 +33,7 @@ class Stock:
 					'objecttype': 'date',
 					'value': self.date,
 				},
-				'open': {
+				'open_': {
 					'objecttype': 'decimal',
 					'value': self.open,
 				},
@@ -165,7 +165,12 @@ class CustomJSONDecoder(JSONDecoder):
 			elif (key, value) == ('objecttype', 'datetime'):
 				return datetime.fromisoformat(obj['value'])
 			elif key == 'properties':
-				return obj['properties']
+				vars = obj['properties']
+				cls_name = obj['objecttype']
+				if cls_name == 'stock':
+					return Stock(**vars)
+				elif cls_name == 'trade':
+					return Trade(**vars)
 
 		return obj
 
@@ -189,7 +194,5 @@ if __name__ == "__main__":
 	}
 
 	serialise = dumps(activity, cls=CustomJSONEncoder, indent=10)
-	# print(serialise)
-
 	deserialise = loads(serialise, cls=CustomJSONDecoder)
 	print(deserialise)
