@@ -146,33 +146,34 @@ class CustomJSONDecoder(JSONDecoder):
 		super().__init__(**{**kwargs, **my_params})
 
 
-
 	def deal_with_parse_float(self, obj):
 		return Decimal(obj)
+
 
 	def deal_with_obj_hook(self, obj):
 		''' This function will get all the dict objects root or nested and will need to return a dict object'''
 
 		for key, value in obj.items():
-			if (key, value) == ('objecttype', 'decimal'):
-				return obj['value']
-			elif (key, value) == ('objecttype', 'integer'):
-				return obj['value']
-			elif (key, value) == ('objecttype', 'string'):
-				return obj['value']
-			elif (key, value) == ('objecttype', 'date'):
-				return date.fromisoformat(obj['value'])
-			elif (key, value) == ('objecttype', 'datetime'):
-				return datetime.fromisoformat(obj['value'])
+
+			if key == 'objecttype':
+				if value == 'decimal' or value == 'integer' or value == 'string':
+					return obj['value']
+				elif value == 'date':
+					return date.fromisoformat(obj['value'])
+				elif value == 'datetime':
+					return datetime.fromisoformat(obj['value'])
+
 			elif key == 'properties':
-				vars = obj['properties']
+
 				cls_name = obj['objecttype']
 				if cls_name == 'stock':
-					return Stock(**vars)
+					return Stock(**obj['properties'])
 				elif cls_name == 'trade':
-					return Trade(**vars)
+					return Trade(**obj['properties'])
 
-		return obj
+
+		else:
+			return obj
 
 
 
@@ -195,4 +196,6 @@ if __name__ == "__main__":
 
 	serialise = dumps(activity, cls=CustomJSONEncoder, indent=10)
 	deserialise = loads(serialise, cls=CustomJSONDecoder)
-	print(deserialise)
+
+	for k, v in deserialise.items():
+		print(k, v)
