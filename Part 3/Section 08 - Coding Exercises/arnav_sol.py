@@ -1,7 +1,6 @@
 from datetime import date, datetime
 from decimal import Decimal
-from json import JSONEncoder, dumps
-from functools import singledispatch
+from json import JSONEncoder, dumps, loads, JSONDecoder
 
 
 class Stock:
@@ -23,7 +22,7 @@ class Stock:
 		This class method will return a dictionary that will let the deserializer know the objecttype as well
 		"""
 		return {
-			'objectType': 'Stock',
+			'objecttype': 'Stock',
 			'properties': {
 				'symbol': self.symbol,
 				'date': self.date,
@@ -54,7 +53,7 @@ class Trade:
 		This class method will return a dictionary that will let the deserializer know the objecttype as well
 		"""
 		return {
-			'objectType': 'Trade',
+			'objecttype': 'Trade',
 			'properties': {
 				'symbol': self.symbol,
 				'timestamp': self.timestamp,
@@ -74,7 +73,8 @@ class CustomJSONEncoder(JSONEncoder):
 			"indent": 2,
 		}
 
-		super().__init__(**{**kwargs, **my_params})
+		# By default, overriding any arguements mentioned here regardless of what the dev puts to maintain consistency
+		super().__init__(*args, **{**kwargs, **my_params})
 
 
 	#  TODO In python 3.8 you can use singledispatchemthod which lets you decorate class instace methods
@@ -89,6 +89,8 @@ class CustomJSONEncoder(JSONEncoder):
 				return f'Decimal({str(obj)})'
 			elif isinstance(obj, date) or isinstance(obj, datetime):
 				return obj.isoformat()
+
+		#  Best to call the parents default so that correct error handling and reporting functionality can be tapped into.
 		except TypeError:
 			super().default(obj)
 
@@ -114,5 +116,5 @@ if __name__ == "__main__":
 		]
 	}
 
-	dup_1 = dumps(activity, cls=CustomJSONEncoder)
+	dup_1 = dumps(activity, cls=CustomJSONEncoder, indent=10)
 	print(dup_1)
