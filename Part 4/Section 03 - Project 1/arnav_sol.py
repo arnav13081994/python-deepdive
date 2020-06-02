@@ -31,23 +31,18 @@ Helper Methods:
 '''
 
 from numbers import Integral
-from datetime import timedelta
+from datetime import timedelta, datetime
 
 
 class TimeZone:
 
 	def __init__(self, name, offset_hr, offset_min):
 
-		print("Validating and  Initialsing")
+		print("Validating and Initialsing")
 		self._name = self.validate_name(name)
 		self._offset_hr = self.validate_offset_hr(offset_hr)
 		self._offset_min = self.validate_offset_min(offset_min)
-
-
-		self._offset = None
-
-	# TODO At class instance init time, setters and geters are not called. They are called when the class instance attributes are requeted or updated after clreation and initilsaition only.
-	# TODO Refactor the code to have validators for offset, offset_hr, and offset_min and use them in class __init__ as well as in the 3 setters respectively.
+		self._offset = timedelta(minutes=self._offset_min, hours=self._offset_hr)
 
 	@property
 	def name(self):
@@ -73,8 +68,8 @@ class TimeZone:
 		# Validate and set tz offset hour
 		self._offset_hr = self.validate_offset_hr(value)
 
-	# Trigger update for _offset
-	# self._offset = timedelta(hours=self._offset_hr)
+		# Trigger update for _offset
+		self._offset = timedelta(minutes=self._offset_min, hours=self._offset_hr)
 
 	@property
 	def offset_min(self):
@@ -88,8 +83,8 @@ class TimeZone:
 
 		self._offset_min = self.validate_offset_min(value)
 
-	# Trigger update for _offset
-	# self._offset = timedelta(minutes=self._offset_min)
+		# Trigger update for _offset
+		self._offset = timedelta(minutes=self._offset_min, hours=self._offset_hr)
 
 	@property
 	def offset(self):
@@ -98,10 +93,7 @@ class TimeZone:
 
 	@offset.setter
 	def offset(self, value):
-		if self._offset_min and self._offset_hr:
-			self._offset = timedelta(minutes=self._offset_min, hours=self._offset_hr)
-		else:
-			self._offset = value
+		self._offset = value
 
 	def __eq__(self, other):
 		return (
@@ -114,30 +106,30 @@ class TimeZone:
 	def __repr__(self):
 		return f'TimeZone(name={self._name}, offset_hr={self._offset_hr}, offset_min={self._offset_min})'
 
-
-
-
 	# Validators Functions
-	@staticmethod
-	def validate_offset_min(value):
+	def validate_offset_min(self, value):
 		if not isinstance(value, Integral):
 			raise TypeError("Minutes Offset needs to be an integer")
-		elif not (0 <= value <= 59):
+		elif not (-59 <= value <= 59):
 			raise ValueError(
-				"Minutes Offset must be between 0 and +59. Sign of hours would be used to create the correct offset"
+				"Minutes Offset must be between -59 and +59. Sign of hours would be used to create the correct offset"
 			)
-		return value
+		sign_hr = 1 if self._offset_hr >= 0 else -1
+		sign_min = 1 if value >= 0 else -1
 
-	@staticmethod
-	def validate_offset_hr(value):
+		if sign_hr == sign_min:
+			return value
+		else:
+			return -1*value
+
+	def validate_offset_hr(self, value):
 		if not isinstance(value, Integral):
 			raise TypeError("Hours Offset needs to be an integer")
 		elif not (-12 <= value <= 14):
 			raise ValueError("Hours Offset must be between -12 and +14")
 		return value
 
-	@staticmethod
-	def validate_name(value):
+	def validate_name(self, value):
 		if not isinstance(value, str):
 			raise TypeError("Timezone must be of type str")
 		elif not value.strip() or not value.strip().isalpha():
@@ -146,9 +138,8 @@ class TimeZone:
 
 
 if __name__ == "__main__":
-	tz1 = TimeZone('ABC', -2, -15)
-	tz2 = TimeZone('ABC', -2, -15)
+	tz1 = TimeZone('ABC', -2, 15)
+	dt = datetime.utcnow()
+	print(dt)
 	print(tz1)
-	tz1.offset_hr = -2
-	tz1.offset_min = -15
-	print(tz1)
+	print(dt + tz1.offset)
