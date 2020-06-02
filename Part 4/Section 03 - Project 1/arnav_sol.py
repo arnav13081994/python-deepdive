@@ -72,7 +72,7 @@ class TimeZone:
 		# Validate tz offset hour
 
 		print("settings offset hour....")
-		if isinstance(value, Integral):
+		if not isinstance(value, Integral):
 			raise TypeError("Hours Offset needs to be an integer")
 		elif not (-12 <= value <= 14):
 			raise ValueError("Hours Offset must be between -12 and +14")
@@ -90,7 +90,7 @@ class TimeZone:
 	def offset_min(self, value):
 		# Validate the TZ offset_min
 		print("settings offset minute....")
-		if isinstance(value, Integral):
+		if not isinstance(value, Integral):
 			raise TypeError("Minutes Offset needs to be an integer")
 		elif not (0 <= value <= 59):
 			raise ValueError("Minutes Offset must be between 0 and +59. Sign of hours would be used to create"
@@ -127,4 +127,6 @@ if __name__ == "__main__":
 	tz2 = TimeZone('ABC', -2, -15)
 	print(tz1)
 	print(tz1 == tz2)
-	# tz1.offset_hr = 10
+	tz1.offset_hr = 10
+	tz1.offset_min = 100
+	print(tz1)
