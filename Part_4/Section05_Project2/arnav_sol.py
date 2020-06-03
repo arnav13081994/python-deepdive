@@ -1,13 +1,6 @@
 '''
 
 
-modulus, values must be integers
-In addition, modulus should be a positive integer
-Store the vvalue as the resider ie value (mod modulus) or value % modulus
-
-create instance method for the congreunce operator ie a == b should check that a (mod n) == b (mod n) but also allow the same comparison for int objects
-eg  Mod(value, modulus) == Int => Mod(value, modulus) == Mod(int, modulus)
-Allow comparison of 2 Mod objects iff they have the same modulus.
 
 Implement repr, +, -, *, ** as well as a method so that calling int(mod_object) will return the residue.
 
@@ -56,6 +49,23 @@ class Mod:
 			raise TypeError("Value must be an integer")
 		return value
 
+	def __eq__(self, other):
+		'''Checks if the value of Mod is the same or not.'''
+		print(f'{self}, {other}')
+
+		# If other is anything but not int or Mod object return NotImplemented
+		if isinstance(other, Mod) or isinstance(other, int):
+			# Check that the 2 Mod objects have the same modulus otherwise raise NotImplemented
+			if isinstance(other, Mod):
+				if self._modulus != other._modulus:
+					return NotImplemented
+				else:
+					return self._value == other._value
+			else:
+				# Convert other to Mod object if not already one
+				other = Mod(other, self._modulus)
+				return self._value == other._value
+		return NotImplemented
 
 	def __repr__(self):
 		''' Mod object instance representation'''
@@ -65,17 +75,12 @@ class Mod:
 if __name__ == "__main__":
 
 	a = Mod(8, 3)
+	b = 11
+	c = 12
 
-	print(a)
-	print(a.modulus)
-	print(a.value)
-	a.value = 10
-
-	a = Mod(-8, 3)
-
-	print(a)
-	print(a.modulus)
-	print(a.value)
-
-
-
+	print(a == b)
+	print(b == a)
+	print(a == c)
+	print(a == 11.00000001)
+	print(11.00000001 == a)
+	print(Mod(10, 10) == 0)
