@@ -35,21 +35,19 @@ class Mod:
 		return self._value
 
 	def __int__(self):
-		return self._value
+		return self.value
 
 	def __eq__(self, other):
 		'''Checks if the value of Mod is the same or not.'''
 		self, other = self.conv_to_mod(other)
 		if (self, other) == (NotImplemented, NotImplemented):
 			return NotImplemented
-		return self._value == other._value
+		return self.value == other.value
 
 
 	def __repr__(self):
 		''' Mod object instance representation'''
-		return f'Mod(value={self._value}, modulus={self._modulus})'
-
-
+		return f'Mod(value={self.value}, modulus={self.modulus})'
 
 
 	# Helper Functions
@@ -76,13 +74,13 @@ class Mod:
 		if isinstance(other, Mod) or isinstance(other, int):
 			# Check that the 2 Mod objects have the same modulus otherwise raise NotImplemented
 			if isinstance(other, Mod):
-				if self._modulus != other._modulus:
+				if self.modulus != other.modulus:
 					return NotImplemented, NotImplemented
 				else:
 					return self, other
 			else:
 				# Convert other to Mod object
-				return self, Mod(other, self._modulus)
+				return self, Mod(other, self.modulus)
 		return NotImplemented, NotImplemented
 
 
@@ -94,3 +92,6 @@ if __name__ == "__main__":
 	d = Mod(11, 3)
 	b = 11
 	c = 12
+
+	print(a==d)
+	print(a==11)
