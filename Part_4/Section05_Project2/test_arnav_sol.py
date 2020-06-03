@@ -63,3 +63,14 @@ def test_validate_value_exceptions():
 	with pytest.raises(TypeError) as exec_info:
 		Mod(10.9, 10)
 	assert str(exec_info.value) == 'Value must be an integer'
+
+
+
+def test_read_only_exceptions():
+	with pytest.raises(AttributeError):
+		a = Mod(10, 10)
+		a.value = 15
+
+	with pytest.raises(AttributeError):
+		a = Mod(10, 10)
+		a.modulus = 15
