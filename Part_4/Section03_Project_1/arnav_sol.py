@@ -38,7 +38,7 @@ class TimeZone:
 
 	def __init__(self, name, offset_hr, offset_min):
 
-		print("Validating and Initialsing")
+		print("Validating and Initialising")
 		self._name = self.validate_name(name)
 		self._offset_hr = self.validate_offset_hr(offset_hr)
 		self._offset_min = self.validate_offset_min(offset_min)
@@ -112,15 +112,14 @@ class TimeZone:
 			raise TypeError("Minutes Offset needs to be an integer")
 		elif not (-59 <= value <= 59):
 			raise ValueError(
-				"Minutes Offset must be between -59 and +59. Sign of hours would be used to create the correct offset"
+				"Minutes Offset must be between -59 and +59. Sign of hours offset would be used to create the correct offset"
 			)
 		sign_hr = 1 if self._offset_hr >= 0 else -1
 		sign_min = 1 if value >= 0 else -1
 
 		if sign_hr == sign_min:
 			return value
-		else:
-			return -1*value
+		return -1*value
 
 	def validate_offset_hr(self, value):
 		if not isinstance(value, Integral):
@@ -138,7 +137,8 @@ class TimeZone:
 
 
 if __name__ == "__main__":
-	tz1 = TimeZone('ABC', -2, 15)
+
+	tz1 = TimeZone('ABC', -2, -15)
 	dt = datetime.utcnow()
 	print(dt)
 	print(tz1)
