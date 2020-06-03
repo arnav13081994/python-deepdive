@@ -84,8 +84,6 @@ class Mod:
 		return NotImplemented, NotImplemented
 
 
-
-
 if __name__ == "__main__":
 
 	a = Mod(8, 3)
