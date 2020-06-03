@@ -13,15 +13,6 @@ Test Cases:
 Congruence test cases:
 
 
-1) comparison of 2 mod objects with same modulus
-#####2) comparison of 2 mod objects with different modulus
-3) comparison of 1 mod object with an integer
-#####4) comparison of 1 mod object with not an integer
-
-create instance method for the congreunce operator ie a == b should check that a (mod n) == b (mod n) but
-also allow the same comparison for int objects
-eg  Mod(value, modulus) == Int => Mod(value, modulus) == Mod(int, modulus)
-Allow comparison of 2 Mod objects iff they have the same modulus.
 
 '''
 
@@ -103,23 +94,23 @@ def test_eq_happy():
 	assert Mod(10, 10).__eq__(2+3j) == NotImplemented
 	assert (2+3j).__eq__(Mod(10, 10)) == NotImplemented
 
+
+	# Comparison of 1 mod object with an int
+	assert Mod(10, 10).__eq__(0) == True
+	assert Mod(8, 3).__eq__(11) == True
+	assert Mod(8, 3).__eq__(10) == False
+
+
 	# Comparison of 2 Mod objects with different moduli
 	assert Mod(10, 10).__eq__(Mod(10, 7)) == NotImplemented
+	assert Mod(110, 20).__eq__(Mod(10, 30)) == NotImplemented
 
+	# Comparison of 2 Mod objects with same moduli
 
+	# Success
+	assert Mod(-115, 20).__eq__(Mod(25, 20)) == True
+	assert Mod(11, 3).__eq__(Mod(8, 3)) == True
 
-# TODO Find an easy way to simulate numbers that are not of type int
-
-
-'''
-2 mod objects with the same mod or comparison of 1 mod object and an int type
-'''
-
-#
-#
-# def test_eq_happy():
-# 	pass
-
-'''
-Comparison of 2 mod objects with differnt modulii and comparison of a Mod object with something that is not an int.
-'''
+	# Failure
+	assert Mod(110, 20).__eq__(Mod(-33, 20)) == False
+	assert Mod(-115, 20).__eq__(Mod(-25, 20)) == False

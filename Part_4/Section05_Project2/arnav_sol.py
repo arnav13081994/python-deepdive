@@ -77,10 +77,3 @@ if __name__ == "__main__":
 	a = Mod(8, 3)
 	b = 11
 	c = 12
-
-	print(a == b)
-	print(b == a)
-	print(a == c)
-	print(a == 11.00000001)
-	print(11.00000001 == a)
-	print(Mod(10, 10) == 0)
