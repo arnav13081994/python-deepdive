@@ -2,16 +2,8 @@
 
 
 
-Implement  +, -, *, ** as well as equivalent in place operations
+Implement  *, ** as well as equivalent in place operations
 
-All math operations between 2 mod will only happen if they have the same modulus, in case one of them is an integer convert the int to basically an equivalent MNod object with the same modulus
-And the operators will always return a MOD instance.
-
-Same as above except that the operators now are in-place
-Implement +, -, *, ** as well as a method so that calling int(mod_object) will return the residue.
-
-All math operatoins between 2 mod will only happen if they have the same modulus, in case one of them is an integer convert the int to basically an equivalent MNod object with the same modulus
-And the operators will always return a MOD instance.
 
 Implement ordering and compare using value of the Mod. Support comprison between 2 mod objects (same modulus) as well as a mod object and an int.
 
