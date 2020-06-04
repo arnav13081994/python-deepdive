@@ -46,8 +46,9 @@ class Mod:
 
 	def __add__(self, other):
 		'''Adds and returns a new Mod instance.'''
-		print("add called ")
+		print(f"add called, {self}, {other} ")
 		self, other = self.conv_to_mod(other)
+		print(f"add called, {self}, {other} ")
 		if (self, other) == (NotImplemented, NotImplemented):
 			return NotImplemented
 		return Mod(self.value + other.value, self.modulus)
@@ -112,6 +113,8 @@ class Mod:
 		''' Returns (self, other) Mod instances with the same moduli, if possible.
 		 Otherwise return (NotImplemented, NotImplemented)'''
 
+		print(f'{self}, {other}')
+
 		# If other is anything but not int or Mod object return NotImplemented
 		if isinstance(other, Mod) or isinstance(other, int):
 			# Check that the 2 Mod objects have the same modulus otherwise raise NotImplemented
@@ -132,7 +135,10 @@ if __name__ == "__main__":
 	d = Mod(11, 3)
 	b = 11
 	c = 12
-
+	print(a == Mod(8,5))
+	# print((2+3j) + (Mod(10, 10)))
+	# print(('2+3j') + (Mod(10, 10)))
+	# print("10.3" + Mod(10,  10))
 	#
 	# print(hex(id(a)))
 	# print(hex(id(d)))
@@ -144,17 +150,17 @@ if __name__ == "__main__":
 	# print(hex(id(a)))
 	# print(a)
 
-	print(hex(id(a)))
-	print(hex(id(b)))
-	b += a
-	print(b)
-	print(hex(id(b)))
-
-
-	b = 11
-	print(hex(id(b)))
-	print(hex(id(a)))
-	a += b
-	print(a)
-	print(hex(id(a)))
-
+	# print(hex(id(a)))
+	# print(hex(id(b)))
+	# b += a
+	# print(b)
+	# print(hex(id(b)))
+	#
+	#
+	# b = 11
+	# print(hex(id(b)))
+	# print(hex(id(a)))
+	# a += b
+	# print(a)
+	# print(hex(id(a)))
+	#

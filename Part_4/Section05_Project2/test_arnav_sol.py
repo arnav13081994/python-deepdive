@@ -24,7 +24,6 @@ iadd test cases:
 
 '''
 
-
 from decimal import Decimal
 import pytest
 from Part_4.Section05_Project2.arnav_sol import Mod
@@ -68,6 +67,7 @@ def test_validate_modulus_exceptions():
 		Mod(10, 10.9)
 	assert str(exec_info.value) == 'Modulus must be an integer'
 
+
 def test_validate_value_exceptions():
 	with pytest.raises(TypeError) as exec_info:
 		Mod("10", 10)
@@ -76,6 +76,7 @@ def test_validate_value_exceptions():
 	with pytest.raises(TypeError) as exec_info:
 		Mod(10.9, 10)
 	assert str(exec_info.value) == 'Value must be an integer'
+
 
 def test_read_only_exceptions():
 	with pytest.raises(AttributeError):
@@ -88,70 +89,68 @@ def test_read_only_exceptions():
 
 
 # Dunder Method Test Cases
+
 def test_eq_happy():
-
 	# Comparison of 1 Mod object with not an int
-	assert Mod(10, 10).__eq__(10.3) == NotImplemented
-	assert 10.3.__eq__(Mod(10, 10)) == NotImplemented
-	assert Mod(10, 10).__eq__('10.3') == NotImplemented
-	assert "10.3".__eq__(Mod(10, 10)) == NotImplemented
-	assert Mod(10, 10).__eq__(Decimal('10.3')) == NotImplemented
-	assert Decimal('10.3').__eq__(Mod(10, 10)) == NotImplemented
-	assert Mod(10, 10).__eq__(2+3j) == NotImplemented
-	assert (2+3j).__eq__(Mod(10, 10)) == NotImplemented
-
+	assert Mod(10, 10) != (10.3)
+	assert 10.3 != (Mod(10, 10))
+	assert Mod(10, 10) != ('10.3')
+	assert "10.3" != (Mod(10, 10))
+	assert Mod(10, 10) != (Decimal('10.3'))
+	assert Decimal('10.3') != (Mod(10, 10))
+	assert Mod(10, 10) != (2 + 3j)
+	assert (2 + 3j) != (Mod(10, 10))
 
 	# Comparison of 1 mod object with an int
-	assert Mod(10, 10).__eq__(0) == True
-	assert Mod(8, 3).__eq__(11) == True
-	assert Mod(8, 3).__eq__(10) == False
-
+	assert Mod(10, 10) == 0
+	assert Mod(8, 3) == 11
+	assert Mod(8, 3) != 10
 
 	# Comparison of 2 Mod objects with different moduli
-	assert Mod(10, 10).__eq__(Mod(10, 7)) == NotImplemented
-	assert Mod(110, 20).__eq__(Mod(10, 30)) == NotImplemented
+	assert Mod(10, 10) != Mod(10, 7)
+	assert Mod(110, 20) != Mod(10, 30)
 
 	# Comparison of 2 Mod objects with same moduli
 
 	# Success
-	assert Mod(-115, 20).__eq__(Mod(25, 20)) == True
-	assert Mod(11, 3).__eq__(Mod(8, 3)) == True
+	assert (Mod(-115, 20) == Mod(25, 20))
+	assert (Mod(11, 3) == Mod(8, 3))
 
 	# Failure
-	assert Mod(110, 20).__eq__(Mod(-33, 20)) == False
-	assert Mod(-115, 20).__eq__(Mod(-25, 20)) == False
-
+	assert (Mod(110, 20) != Mod(-33, 20))
+	assert (Mod(-115, 20) != Mod(-25, 20))
 
 
 def test_add_happy():
+	pass
 
-	# Comparison of 1 Mod object with not an int
-	assert Mod(10, 10).__eq__(10.3) == NotImplemented
-	assert 10.3.__eq__(Mod(10, 10)) == NotImplemented
-	assert Mod(10, 10).__eq__('10.3') == NotImplemented
-	assert "10.3".__eq__(Mod(10, 10)) == NotImplemented
-	assert Mod(10, 10).__eq__(Decimal('10.3')) == NotImplemented
-	assert Decimal('10.3').__eq__(Mod(10, 10)) == NotImplemented
-	assert Mod(10, 10).__eq__(2+3j) == NotImplemented
-	assert (2+3j).__eq__(Mod(10, 10)) == NotImplemented
-
-
-	# Comparison of 1 mod object with an int
-	assert Mod(10, 10).__eq__(0) == True
-	assert Mod(8, 3).__eq__(11) == True
-	assert Mod(8, 3).__eq__(10) == False
-
-
-	# Comparison of 2 Mod objects with different moduli
-	assert Mod(10, 10).__eq__(Mod(10, 7)) == NotImplemented
-	assert Mod(110, 20).__eq__(Mod(10, 30)) == NotImplemented
-
-	# Comparison of 2 Mod objects with same moduli
-
-	# Success
-	assert Mod(-115, 20).__eq__(Mod(25, 20)) == True
-	assert Mod(11, 3).__eq__(Mod(8, 3)) == True
-
-	# Failure
-	assert Mod(110, 20).__eq__(Mod(-33, 20)) == False
-	assert Mod(-115, 20).__eq__(Mod(-25, 20)) == False
+# Addition of 1 Mod object with not an int
+# assert (Mod(10, 10) + 10.3 == NotImplemented)
+# assert 10.3.__add__(Mod(10, 10)) == NotImplemented
+# assert Mod(10, 10).__add__('10.3') == NotImplemented
+# assert "10.3".__add__(Mod(10, 10)) == NotImplemented
+# assert Mod(10, 10).__add__(Decimal('10.3')) == NotImplemented
+# assert Decimal('10.3').__add__(Mod(10, 10)) == NotImplemented
+# assert Mod(10, 10).__add__(2+3j) == NotImplemented
+# assert (2+3j).__add__(Mod(10, 10)) == NotImplemented
+#
+#
+# # Addition of 1 mod object with an int
+# assert Mod(10, 10).__add__(0) == Mod(10, 10)
+# assert Mod(8, 3).__add__(11) == Mod(19, 3)
+# assert Mod(8, 3).__add__(10) == Mod(18, 3)
+#
+#
+# # Addition of 2 Mod objects with different moduli
+# assert Mod(10, 10).__add__(Mod(10, 7)) == NotImplemented
+# assert Mod(110, 20).__add__(Mod(10, 30)) == NotImplemented
+#
+# # Addition of 2 Mod objects with same moduli
+#
+# # Success
+# assert Mod(-115, 20).__add__(Mod(15, 20)) == Mod(-100, 20)
+# assert Mod(11, 3).__add__(Mod(8, 3)) == Mod(19, 3)
+#
+# # Failure
+# assert Mod(110, 20).__add__(Mod(-33, 20)) != Mod(-115, 20)
+# assert Mod(-115, 20).__add__(Mod(-25, 20)) != Mod(-115, 20)
