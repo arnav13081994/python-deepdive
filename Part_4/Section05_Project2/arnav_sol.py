@@ -79,11 +79,29 @@ class Mod:
 		return self
 
 	def __mul__(self, other):
+		'''Multiplies and returns a new Mod instance.'''
 		print("mul called")
-		pass
+		self, other = self.conv_to_mod(other)
+
+		if (self, other) == (NotImplemented, NotImplemented):
+			return NotImplemented
+		return Mod(self.value * other.value, self.modulus)
+
 
 	def __imul__(self, other):
-		pass
+		'''Multiplies and returns a mutated Mod instance.'''
+		print("imul called")
+		self, other = self.conv_to_mod(other)
+		if (self, other) == (NotImplemented, NotImplemented):
+			return NotImplemented
+		self._value *= other.value
+		self._value = self.value % self.modulus
+		return self
+
+	def __rmul__(self, other):
+		print("rmul called")
+		return self.__mul__(other)
+
 
 	def __pow__(self, power, modulo=None):
 		print("pw called")
@@ -131,17 +149,19 @@ class Mod:
 
 if __name__ == "__main__":
 
-	# a = Mod(8, 3)
-	# d = Mod(11, 3)
-	# b = 11
-	# c = 12
-	# print(-d)
+	a = Mod(8, 3)
+	d = Mod(11, 3)
+	b = 11
+	c = 12
+
+
+# print(-d)
 	# print(a+d)
-	qq = Mod(11, 3)
-	print(hex(id(qq)))
-	qq -= Mod(11, 3)
-	print(qq, hex(id(qq)))
-	# print(aa)
+	# qq = Mod(11, 3)
+	# print(hex(id(qq)))
+	# qq -= Mod(11, 3)
+	# print(qq, hex(id(qq)))
+	# # print(aa)
 	# bb = Mod(11, 3) - 11
 	# # print(bb)
 	# qq = 11 - Mod(11, 3)
