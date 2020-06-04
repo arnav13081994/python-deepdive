@@ -46,21 +46,21 @@ class Mod:
 
 	def __add__(self, other):
 		'''Adds and returns a new Mod instance.'''
-		print(f"add called, {self}, {other} ")
+		print("add called")
 		self, other = self.conv_to_mod(other)
-		print(f"add called, {self}, {other} ")
+
 		if (self, other) == (NotImplemented, NotImplemented):
 			return NotImplemented
 		return Mod(self.value + other.value, self.modulus)
 
 	def __radd__(self, other):
 		'''Adds and returns a new Mod instance'''
-		print("radd called ")
+		print("radd called")
 		return self.__add__(other)
 
 	def __iadd__(self, other):
 		'''Adds and returns a mutated Mod instance.'''
-		print("iadd called ")
+		print("iadd called")
 		self, other = self.conv_to_mod(other)
 		if (self, other) == (NotImplemented, NotImplemented):
 			return NotImplemented
@@ -68,14 +68,23 @@ class Mod:
 		self._value = self.value % self.modulus
 		return self
 
-
+	def __neg__(self):
+		print("neg called")
+		self._value = -self._value
+		return self
 
 	def __sub__(self, other):
 		print("sub called")
-		pass
+		return self + (-other)
+
+	def __rsub__(self, other):
+		print("rsub called")
+		return self + (-other)
 
 	def __isub__(self, other):
-		pass
+		print("isub called")
+		self += -other
+		return self
 
 	def __mul__(self, other):
 		print("mul called")
@@ -112,8 +121,7 @@ class Mod:
 	def conv_to_mod(self, other):
 		''' Returns (self, other) Mod instances with the same moduli, if possible.
 		 Otherwise return (NotImplemented, NotImplemented)'''
-
-		print(f'{self}, {other}')
+		print(f"Conv called {self}, {other}")
 
 		# If other is anything but not int or Mod object return NotImplemented
 		if isinstance(other, Mod) or isinstance(other, int):
@@ -131,12 +139,26 @@ class Mod:
 
 if __name__ == "__main__":
 
-	a = Mod(8, 3)
-	d = Mod(11, 3)
-	b = 11
-	c = 12
+	# a = Mod(8, 3)
+	# d = Mod(11, 3)
+	# b = 11
+	# c = 12
+	# print(-d)
+	# print(a+d)
+	qq = Mod(11, 3)
+	print(hex(id(qq)))
+	qq -= Mod(11, 3)
+	print(qq, hex(id(qq)))
+	# print(aa)
+	# bb = Mod(11, 3) - 11
+	# # print(bb)
+	# qq = 11 - Mod(11, 3)
+	# # print(qq)
+	#
+	# print(aa == bb)
+	# print(bb == qq)
 
-	# print(a == Mod(8,5))
+# print(a == Mod(8,5))
 	# Mod(10, 10) + Mod(10, 7)
 	# print((2+3j) + (Mod(10, 10)))
 	# print(('2+3j') + (Mod(10, 10)))
@@ -152,16 +174,16 @@ if __name__ == "__main__":
 	# print(hex(id(a)))
 	# print(a)
 
-	print(a, hex(id(a)))
-	a += b
-	print(a, hex(id(a)))
-	print(a is a)
-
-	a = Mod(8, 3)
-	print(a, hex(id(a)))
-	a = a + b
-	print(a, hex(id(a)))
-	print(a is a)
+	# print(a, hex(id(a)))
+	# a += b
+	# print(a, hex(id(a)))
+	# print(a is a)
+	#
+	# a = Mod(8, 3)
+	# print(a, hex(id(a)))
+	# a = a + b
+	# print(a, hex(id(a)))
+	# print(a is a)
 
 #
 	# b = 11
