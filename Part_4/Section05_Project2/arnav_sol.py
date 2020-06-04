@@ -8,7 +8,7 @@ All math operations between 2 mod will only happen if they have the same modulus
 And the operators will always return a MOD instance.
 
 Same as above except that the operators now are in-place
-Implement repr, +, -, *, ** as well as a method so that calling int(mod_object) will return the residue.
+Implement +, -, *, ** as well as a method so that calling int(mod_object) will return the residue.
 
 All math operatoins between 2 mod will only happen if they have the same modulus, in case one of them is an integer convert the int to basically an equivalent MNod object with the same modulus
 And the operators will always return a MOD instance.
@@ -44,6 +44,48 @@ class Mod:
 			return NotImplemented
 		return self.value == other.value
 
+	def __add__(self, other):
+		'''Adds and returns a new Mod instance.'''
+		print("add called ")
+		self, other = self.conv_to_mod(other)
+		if (self, other) == (NotImplemented, NotImplemented):
+			return NotImplemented
+		return Mod(self.value + other.value, self.modulus)
+
+	def __radd__(self, other):
+		'''Adds and returns a new Mod instance'''
+		print("radd called ")
+		return self.__add__(other)
+
+	def __iadd__(self, other):
+		'''Adds and returns a mutated Mod instance.'''
+		print("iadd called ")
+		self, other = self.conv_to_mod(other)
+		if (self, other) == (NotImplemented, NotImplemented):
+			return NotImplemented
+		self._value += other.value
+		self._value = self.value % self.modulus
+		return self
+
+
+
+	def __sub__(self, other):
+		print("sub called")
+		pass
+
+	def __isub__(self, other):
+		pass
+
+	def __mul__(self, other):
+		print("mul called")
+		pass
+
+	def __imul__(self, other):
+		pass
+
+	def __pow__(self, power, modulo=None):
+		print("pw called")
+		pass
 
 	def __repr__(self):
 		''' Mod object instance representation'''
@@ -91,5 +133,28 @@ if __name__ == "__main__":
 	b = 11
 	c = 12
 
-	print(a==d)
-	print(a==11)
+	#
+	# print(hex(id(a)))
+	# print(hex(id(d)))
+	# e = 11 + a
+	# print(hex(id(e)))
+	# print(e)
+	#
+	# a += d
+	# print(hex(id(a)))
+	# print(a)
+
+	print(hex(id(a)))
+	print(hex(id(b)))
+	b += a
+	print(b)
+	print(hex(id(b)))
+
+
+	b = 11
+	print(hex(id(b)))
+	print(hex(id(a)))
+	a += b
+	print(a)
+	print(hex(id(a)))
+

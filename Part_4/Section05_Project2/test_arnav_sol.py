@@ -10,8 +10,16 @@ Test Cases:
 '''
 
 '''
-Congruence test cases:
+add test cases:
+1) 2 mod objects are added with the same moduli
+2) 2 mod objects are added with different moduli
+3) 1 mod objects is added to an int
+4) 1 mod objects is added to not an int
 
+
+iadd test cases:
+
+1) Same as add test cases except that self needs to be mutated and returned in each case.
 
 
 '''
@@ -81,6 +89,41 @@ def test_read_only_exceptions():
 
 # Dunder Method Test Cases
 def test_eq_happy():
+
+	# Comparison of 1 Mod object with not an int
+	assert Mod(10, 10).__eq__(10.3) == NotImplemented
+	assert 10.3.__eq__(Mod(10, 10)) == NotImplemented
+	assert Mod(10, 10).__eq__('10.3') == NotImplemented
+	assert "10.3".__eq__(Mod(10, 10)) == NotImplemented
+	assert Mod(10, 10).__eq__(Decimal('10.3')) == NotImplemented
+	assert Decimal('10.3').__eq__(Mod(10, 10)) == NotImplemented
+	assert Mod(10, 10).__eq__(2+3j) == NotImplemented
+	assert (2+3j).__eq__(Mod(10, 10)) == NotImplemented
+
+
+	# Comparison of 1 mod object with an int
+	assert Mod(10, 10).__eq__(0) == True
+	assert Mod(8, 3).__eq__(11) == True
+	assert Mod(8, 3).__eq__(10) == False
+
+
+	# Comparison of 2 Mod objects with different moduli
+	assert Mod(10, 10).__eq__(Mod(10, 7)) == NotImplemented
+	assert Mod(110, 20).__eq__(Mod(10, 30)) == NotImplemented
+
+	# Comparison of 2 Mod objects with same moduli
+
+	# Success
+	assert Mod(-115, 20).__eq__(Mod(25, 20)) == True
+	assert Mod(11, 3).__eq__(Mod(8, 3)) == True
+
+	# Failure
+	assert Mod(110, 20).__eq__(Mod(-33, 20)) == False
+	assert Mod(-115, 20).__eq__(Mod(-25, 20)) == False
+
+
+
+def test_add_happy():
 
 	# Comparison of 1 Mod object with not an int
 	assert Mod(10, 10).__eq__(10.3) == NotImplemented
