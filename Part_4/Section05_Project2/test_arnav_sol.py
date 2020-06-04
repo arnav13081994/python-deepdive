@@ -6,6 +6,9 @@ Test Cases:
 3) Expected Behaviour for valid Mod.value and Mod.modulus attrs.
 4) Expected Exceptions for invalid Mod object comparison.
 5) Expected Behaviour for valid Mod object comparison.
+6) Expected Exceptions for invalid Mod object addition.
+7) Expected Behaviour for valid Mod object addition.
+
 
 '''
 
@@ -92,14 +95,10 @@ def test_read_only_exceptions():
 
 def test_eq_happy():
 	# Comparison of 1 Mod object with not an int
-	assert Mod(10, 10) != (10.3)
-	assert 10.3 != (Mod(10, 10))
-	assert Mod(10, 10) != ('10.3')
-	assert "10.3" != (Mod(10, 10))
-	assert Mod(10, 10) != (Decimal('10.3'))
-	assert Decimal('10.3') != (Mod(10, 10))
-	assert Mod(10, 10) != (2 + 3j)
-	assert (2 + 3j) != (Mod(10, 10))
+	assert Mod(10, 10) != 10.3
+	assert Mod(10, 10) != '10.3'
+	assert Mod(10, 10) != Decimal('10.3')
+	assert Mod(10, 10) != 2 + 3j
 
 	# Comparison of 1 mod object with an int
 	assert Mod(10, 10) == 0
@@ -122,35 +121,73 @@ def test_eq_happy():
 
 
 def test_add_happy():
-	pass
 
-# Addition of 1 Mod object with not an int
-# assert (Mod(10, 10) + 10.3 == NotImplemented)
-# assert 10.3.__add__(Mod(10, 10)) == NotImplemented
-# assert Mod(10, 10).__add__('10.3') == NotImplemented
-# assert "10.3".__add__(Mod(10, 10)) == NotImplemented
-# assert Mod(10, 10).__add__(Decimal('10.3')) == NotImplemented
-# assert Decimal('10.3').__add__(Mod(10, 10)) == NotImplemented
-# assert Mod(10, 10).__add__(2+3j) == NotImplemented
-# assert (2+3j).__add__(Mod(10, 10)) == NotImplemented
-#
-#
-# # Addition of 1 mod object with an int
-# assert Mod(10, 10).__add__(0) == Mod(10, 10)
-# assert Mod(8, 3).__add__(11) == Mod(19, 3)
-# assert Mod(8, 3).__add__(10) == Mod(18, 3)
-#
-#
-# # Addition of 2 Mod objects with different moduli
-# assert Mod(10, 10).__add__(Mod(10, 7)) == NotImplemented
-# assert Mod(110, 20).__add__(Mod(10, 30)) == NotImplemented
-#
-# # Addition of 2 Mod objects with same moduli
-#
-# # Success
-# assert Mod(-115, 20).__add__(Mod(15, 20)) == Mod(-100, 20)
-# assert Mod(11, 3).__add__(Mod(8, 3)) == Mod(19, 3)
-#
-# # Failure
-# assert Mod(110, 20).__add__(Mod(-33, 20)) != Mod(-115, 20)
-# assert Mod(-115, 20).__add__(Mod(-25, 20)) != Mod(-115, 20)
+	# Addition of 1 Mod object with not an int
+	with pytest.raises(TypeError):
+		Mod(10, 10) + 10.3
+	with pytest.raises(TypeError):
+		Mod(10, 10) + '10.3'
+	with pytest.raises(TypeError):
+		Mod(10, 10) + Decimal('10.3')
+	with pytest.raises(TypeError):
+		Mod(10, 10) + (2+3j)
+
+
+	# Addition of 1 mod object with an int
+	assert Mod(10, 10) + 0 == Mod(10, 10)
+	assert Mod(8, 3) + 11 == Mod(19, 3)
+	assert Mod(8, 3) + 10 == Mod(18, 3)
+
+
+	# Addition of 2 Mod objects with different moduli
+	with pytest.raises(TypeError):
+		Mod(10, 10) + Mod(10, 7)
+	with pytest.raises(TypeError):
+		Mod(110, 20) + Mod(10, 30)
+
+	# Addition of 2 Mod objects with same moduli
+
+	# Success
+	assert Mod(-115, 20) + Mod(15, 20) == Mod(-100, 20)
+	assert Mod(11, 3) + Mod(8, 3) == Mod(19, 3)
+
+	# Failure
+	assert Mod(110, 20) + Mod(-33, 20) != Mod(-115, 20)
+	assert Mod(-115, 20) + Mod(-25, 20) != Mod(-115, 20)
+
+
+def test_iadd_happy():
+	''' Tests in place addition operators which needs to return the same hex(id(Mod))'''
+
+	# Addition of 1 Mod object with not an int
+	with pytest.raises(TypeError):
+		Mod(10, 10) + 10.3
+	with pytest.raises(TypeError):
+		Mod(10, 10) + '10.3'
+	with pytest.raises(TypeError):
+		Mod(10, 10) + Decimal('10.3')
+	with pytest.raises(TypeError):
+		Mod(10, 10) + (2+3j)
+
+
+	# Addition of 1 mod object with an int
+	assert Mod(10, 10) + 0 == Mod(10, 10)
+	assert Mod(8, 3) + 11 == Mod(19, 3)
+	assert Mod(8, 3) + 10 == Mod(18, 3)
+
+
+	# Addition of 2 Mod objects with different moduli
+	with pytest.raises(TypeError):
+		Mod(10, 10) + Mod(10, 7)
+	with pytest.raises(TypeError):
+		Mod(110, 20) + Mod(10, 30)
+
+	# Addition of 2 Mod objects with same moduli
+
+	# Success
+	assert Mod(-115, 20) + Mod(15, 20) == Mod(-100, 20)
+	assert Mod(11, 3) + Mod(8, 3) == Mod(19, 3)
+
+	# Failure
+	assert Mod(110, 20) + Mod(-33, 20) != Mod(-115, 20)
+	assert Mod(-115, 20) + Mod(-25, 20) != Mod(-115, 20)

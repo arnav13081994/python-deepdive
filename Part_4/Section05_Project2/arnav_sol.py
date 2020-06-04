@@ -135,7 +135,9 @@ if __name__ == "__main__":
 	d = Mod(11, 3)
 	b = 11
 	c = 12
-	print(a == Mod(8,5))
+
+	# print(a == Mod(8,5))
+	# Mod(10, 10) + Mod(10, 7)
 	# print((2+3j) + (Mod(10, 10)))
 	# print(('2+3j') + (Mod(10, 10)))
 	# print("10.3" + Mod(10,  10))
