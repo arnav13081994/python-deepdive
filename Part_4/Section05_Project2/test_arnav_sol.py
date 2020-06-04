@@ -43,6 +43,14 @@ def is_mod(value, modulus):
 		return False
 
 
+def id_same(obj1, obj2):
+	''' Returns True if both the objects pased have the same ID'''
+	# This will either throw an exception depending on what obj2 is
+	obj3 = obj1
+	obj1 += obj2
+	return obj1 is obj3
+
+
 # Tests for expected Happy Cases for Mod Object Initialisation
 def test_mod_happy():
 	assert is_mod(10, 10) == True
@@ -159,35 +167,38 @@ def test_add_happy():
 def test_iadd_happy():
 	''' Tests in place addition operators which needs to return the same hex(id(Mod))'''
 
+	assert id_same(Mod(10, 10), 11)
+
 	# Addition of 1 Mod object with not an int
 	with pytest.raises(TypeError):
-		Mod(10, 10) + 10.3
+		id_same(Mod(10, 10), 10.3)
 	with pytest.raises(TypeError):
-		Mod(10, 10) + '10.3'
+		id_same(Mod(10, 10), '10.3')
 	with pytest.raises(TypeError):
-		Mod(10, 10) + Decimal('10.3')
+		id_same(Mod(10, 10), Decimal('10.3'))
 	with pytest.raises(TypeError):
-		Mod(10, 10) + (2+3j)
+		id_same(Mod(10, 10), (2+3j))
 
 
 	# Addition of 1 mod object with an int
-	assert Mod(10, 10) + 0 == Mod(10, 10)
-	assert Mod(8, 3) + 11 == Mod(19, 3)
-	assert Mod(8, 3) + 10 == Mod(18, 3)
+	assert id_same(Mod(10, 10), 0)
+	assert id_same(Mod(8, 3), 11)
+	assert id_same(Mod(8, 3), 10)
 
 
 	# Addition of 2 Mod objects with different moduli
 	with pytest.raises(TypeError):
-		Mod(10, 10) + Mod(10, 7)
+		id_same(Mod(10, 10), Mod(10, 7))
 	with pytest.raises(TypeError):
-		Mod(110, 20) + Mod(10, 30)
+		id_same(Mod(110, 20), Mod(10, 30))
+
 
 	# Addition of 2 Mod objects with same moduli
 
 	# Success
-	assert Mod(-115, 20) + Mod(15, 20) == Mod(-100, 20)
-	assert Mod(11, 3) + Mod(8, 3) == Mod(19, 3)
+	assert id_same(Mod(-115, 20), Mod(15, 20))
+	assert id_same(Mod(11, 3), Mod(8, 3))
 
 	# Failure
-	assert Mod(110, 20) + Mod(-33, 20) != Mod(-115, 20)
-	assert Mod(-115, 20) + Mod(-25, 20) != Mod(-115, 20)
+	assert id_same(Mod(110, 20), Mod(-33, 20))
+	assert id_same(Mod(-115, 20), Mod(-25, 20))

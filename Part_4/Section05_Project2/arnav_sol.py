@@ -152,13 +152,18 @@ if __name__ == "__main__":
 	# print(hex(id(a)))
 	# print(a)
 
-	# print(hex(id(a)))
-	# print(hex(id(b)))
-	# b += a
-	# print(b)
-	# print(hex(id(b)))
-	#
-	#
+	print(a, hex(id(a)))
+	a += b
+	print(a, hex(id(a)))
+	print(a is a)
+
+	a = Mod(8, 3)
+	print(a, hex(id(a)))
+	a = a + b
+	print(a, hex(id(a)))
+	print(a is a)
+
+#
 	# b = 11
 	# print(hex(id(b)))
 	# print(hex(id(a)))
