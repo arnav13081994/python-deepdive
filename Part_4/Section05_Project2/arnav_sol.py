@@ -1,17 +1,10 @@
-'''
-
-
-
-Implement  *, ** as well as equivalent in place operations
-
-
-Implement ordering and compare using value of the Mod. Support comprison between 2 mod objects (same modulus) as well as a mod object and an int.
-
-'''
 from functools import total_ordering
 
+@total_ordering
 class Mod:
-
+	"""
+	Class mimicking Math % operator. Implements basic Modulo Arithmetic as well.
+	"""
 	def __init__(self, value, modulus):
 		self._modulus = self.validate_modulus(modulus)
 		self._value = self.validate_value(value) % self._modulus
@@ -36,6 +29,13 @@ class Mod:
 			return NotImplemented
 		return self.value == other.value
 
+	def __lt__(self, other):
+		'''Check if the given Mod instance's value is lower than other's or not'''
+		self, other = self.conv_to_mod(other)
+		if (self, other) == (NotImplemented, NotImplemented):
+			return NotImplemented
+		return self.value < other.value
+
 	def __add__(self, other):
 		'''Adds and returns a new Mod instance.'''
 		print("add called")
@@ -45,10 +45,6 @@ class Mod:
 			return NotImplemented
 		return Mod(self.value + other.value, self.modulus)
 
-	def __radd__(self, other):
-		'''Adds and returns a new Mod instance'''
-		print("radd called")
-		return self.__add__(other)
 
 	def __iadd__(self, other):
 		'''Adds and returns a mutated Mod instance.'''
@@ -62,15 +58,10 @@ class Mod:
 
 	def __neg__(self):
 		print("neg called")
-		self._value = -self._value
-		return self
+		return Mod(-self.value, self.modulus)
 
 	def __sub__(self, other):
 		print("sub called")
-		return self + (-other)
-
-	def __rsub__(self, other):
-		print("rsub called")
 		return self + (-other)
 
 	def __isub__(self, other):
@@ -98,19 +89,32 @@ class Mod:
 		self._value = self.value % self.modulus
 		return self
 
-	def __rmul__(self, other):
-		print("rmul called")
-		return self.__mul__(other)
-
 
 	def __pow__(self, power, modulo=None):
+		''' Returns the Exponentiated version of Mod object'''
 		print("pw called")
-		pass
+		self, power = self.conv_to_mod(power)
+
+		if (self, power) == (NotImplemented, NotImplemented):
+			return NotImplemented
+		return Mod(self.value ** power.value, self.modulus)
+
+	def __ipow__(self, other):
+		print("ipow called")
+		self, other = self.conv_to_mod(other)
+		if (self, other) == (NotImplemented, NotImplemented):
+			return NotImplemented
+		self._value **= other.value
+		self._value = self.value % self.modulus
+		return self
 
 	def __repr__(self):
 		''' Mod object instance representation'''
 		return f'Mod(value={self.value}, modulus={self.modulus})'
 
+
+	def __hash__(self):
+		return hash((self.value, self.modulus))
 
 	# Helper Functions
 	def validate_modulus(self, value):
@@ -153,55 +157,4 @@ if __name__ == "__main__":
 	d = Mod(11, 3)
 	b = 11
 	c = 12
-
-
-# print(-d)
-	# print(a+d)
-	# qq = Mod(11, 3)
-	# print(hex(id(qq)))
-	# qq -= Mod(11, 3)
-	# print(qq, hex(id(qq)))
-	# # print(aa)
-	# bb = Mod(11, 3) - 11
-	# # print(bb)
-	# qq = 11 - Mod(11, 3)
-	# # print(qq)
-	#
-	# print(aa == bb)
-	# print(bb == qq)
-
-# print(a == Mod(8,5))
-	# Mod(10, 10) + Mod(10, 7)
-	# print((2+3j) + (Mod(10, 10)))
-	# print(('2+3j') + (Mod(10, 10)))
-	# print("10.3" + Mod(10,  10))
-	#
-	# print(hex(id(a)))
-	# print(hex(id(d)))
-	# e = 11 + a
-	# print(hex(id(e)))
-	# print(e)
-	#
-	# a += d
-	# print(hex(id(a)))
-	# print(a)
-
-	# print(a, hex(id(a)))
-	# a += b
-	# print(a, hex(id(a)))
-	# print(a is a)
-	#
-	# a = Mod(8, 3)
-	# print(a, hex(id(a)))
-	# a = a + b
-	# print(a, hex(id(a)))
-	# print(a is a)
-
-#
-	# b = 11
-	# print(hex(id(b)))
-	# print(hex(id(a)))
-	# a += b
-	# print(a)
-	# print(hex(id(a)))
-	#
+	print({a})
