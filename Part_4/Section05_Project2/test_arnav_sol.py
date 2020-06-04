@@ -51,8 +51,8 @@ def id_same(obj1, obj2, operator):
 		obj1 += obj2
 	elif operator == "-=":
 		obj1 -= obj2
-	elif operator == "":
-		pass
+	elif operator == "*=":
+		obj1 *= obj2
 
 	return obj1 is obj3
 
@@ -134,6 +134,8 @@ def test_eq_happy():
 	assert (Mod(-115, 20) != Mod(-25, 20))
 
 
+
+# '+' and '+=' test cases
 def test_add_happy():
 
 	# Addition of 1 Mod object with not an int
@@ -168,8 +170,6 @@ def test_add_happy():
 	# Failure
 	assert Mod(110, 20) + Mod(-33, 20) != Mod(-115, 20)
 	assert Mod(-115, 20) + Mod(-25, 20) != Mod(-115, 20)
-
-
 def test_iadd_happy():
 	''' Tests in place addition operators which needs to return the same hex(id(Mod))'''
 
@@ -208,8 +208,7 @@ def test_iadd_happy():
 	assert id_same(Mod(-115, 20), Mod(-25, 20), '+=')
 
 
-
-
+# '-' and '-=' test cases
 def test_sub_happy():
 
 	# Addition of 1 Mod object with not an int
@@ -244,8 +243,6 @@ def test_sub_happy():
 	# Failure
 	assert Mod(110, 20) - Mod(-33, 20) != Mod(-115, 20)
 	assert Mod(-115, 20) - Mod(-25, 20) != Mod(-115, 20)
-
-
 def test_isub_happy():
 	''' Tests in place subtraction operators which needs to return the same hex(id(Mod))'''
 
@@ -282,3 +279,76 @@ def test_isub_happy():
 	# Failure
 	assert id_same(Mod(110, 20), Mod(-33, 20), '-=')
 	assert id_same(Mod(-115, 20), Mod(-25, 20), '-=')
+
+
+# '*' and '*=' test cases
+def test_mul_happy():
+
+	# Addition of 1 Mod object with not an int
+	with pytest.raises(TypeError):
+		Mod(10, 10) * 10.3
+	with pytest.raises(TypeError):
+		Mod(10, 10) * '10.3'
+	with pytest.raises(TypeError):
+		Mod(10, 10) * Decimal('10.3')
+	with pytest.raises(TypeError):
+		Mod(10, 10) * (2+3j)
+
+
+	# Addition of 1 mod object with an int
+	assert Mod(10, 10) * 0 == Mod(0, 10)
+	assert Mod(8, 3) * 11 == Mod(88, 3)
+	assert Mod(8, 3) * 10 == Mod(80, 3)
+
+
+	# Addition of 2 Mod objects with different moduli
+	with pytest.raises(TypeError):
+		Mod(10, 10) * Mod(10, 7)
+	with pytest.raises(TypeError):
+		Mod(110, 20) * Mod(10, 30)
+
+	# Addition of 2 Mod objects with same moduli
+
+	# Success
+	assert Mod(-115, 20) * Mod(15, 20) == Mod(-115*15, 20)
+	assert Mod(11, 3) * Mod(8, 3) == Mod(88, 3)
+
+	# Failure
+	assert Mod(110, 20) * Mod(-33, 20) != Mod(0, 20)
+	assert Mod(-115, 20) * Mod(-25, 20) != Mod(20, 20)
+def test_imul_happy():
+	''' Tests in place subtraction operators which needs to return the same hex(id(Mod))'''
+
+	# Addition of 1 Mod object with not an int
+	with pytest.raises(TypeError):
+		id_same(Mod(10, 10), 10.3, '*=')
+	with pytest.raises(TypeError):
+		id_same(Mod(10, 10), '10.3', '*=')
+	with pytest.raises(TypeError):
+		id_same(Mod(10, 10), Decimal('10.3'), '*=')
+	with pytest.raises(TypeError):
+		id_same(Mod(10, 10), (2+3j), '*=')
+
+
+	# Addition of 1 mod object with an int
+	assert id_same(Mod(10, 10), 0, '*=')
+	assert id_same(Mod(8, 3), 11, '*=')
+	assert id_same(Mod(8, 3), 10, '*=')
+
+
+	# Addition of 2 Mod objects with different moduli
+	with pytest.raises(TypeError):
+		id_same(Mod(10, 10), Mod(10, 7), '*=')
+	with pytest.raises(TypeError):
+		id_same(Mod(110, 20), Mod(10, 30), '*=')
+
+
+	# Addition of 2 Mod objects with same moduli
+
+	# Success
+	assert id_same(Mod(-115, 20), Mod(15, 20), '*=')
+	assert id_same(Mod(11, 3), Mod(8, 3), '*=')
+
+	# Failure
+	assert id_same(Mod(110, 20), Mod(-33, 20), '*=')
+	assert id_same(Mod(-115, 20), Mod(-25, 20), '*=')
