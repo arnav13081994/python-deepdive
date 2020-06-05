@@ -125,8 +125,8 @@ class Resource:
 		self.validate(n, Integral, min_value=0)
 		self.total += n
 
-	# def __str__(self):
-	# 	return self.name
+	def __str__(self):
+		return self.name
 
 	def __repr__(self):
 		class_attr_dict = {k.strip('_'): v for k, v in vars(self).items()}
@@ -135,9 +135,8 @@ class Resource:
 
 
 if __name__ == "__main__":
-	# r1 = Resource("Intel Core i9-9900K", "Intel", 10, 0)
-	r1 = Resource("Intel Core i9-9900K", "", 10, 0)
-	# print(r1)
-	# type(r1)
-	# print(r1.category)
+	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 0)
+	print(r1)
+	type(r1)
+	print(r1.category)
 

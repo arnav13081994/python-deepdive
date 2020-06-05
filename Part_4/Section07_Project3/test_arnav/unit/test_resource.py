@@ -166,7 +166,41 @@ def test_freeup():
 
 
 def test_kill():
-	pass
+	''' Tests the kill method of Resource Class'''
+	### Check Independent Updates
+
+	# Success Cases
+	assert Resource("Intel Core i9-9900K", "Intel", 10, 0).kill(5) == None
+	assert Resource("Intel Core i9-9900K", "Intel", 10, 6).kill(6) == None
+	assert Resource("Intel Core i9-9900K", "Intel", 10, 6).kill(8) == None
+	assert Resource("Intel Core i9-9900K", "Intel", 10, 6).kill(4) == None
+	assert Resource("Intel Core i9-9900K", "Intel", 10, 0).kill(0) == None
+	assert Resource("Intel Core i9-9900K", "Intel", 10, 0).kill(10) == None
+
+	# Failure Cases
+	with pytest.raises(ValueError):
+		Resource("Intel Core i9-9900K", "Intel", 10, 6).kill(-1)
+
+	with pytest.raises(ValueError):
+		Resource("Intel Core i9-9900K", "Intel", 10, 6).kill(11)
+
+	with pytest.raises(TypeError):
+		Resource("Intel Core i9-9900K", "Intel", 10, 6).kill(1.58)
+
+	with pytest.raises(TypeError):
+		Resource("Intel Core i9-9900K", "Intel", 10, 6).kill('11')
+
+	### Check Chained Updates (since this method mutates self)
+	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 6)
+
+	assert r1.kill(5) == None
+	assert r1.kill(2) == None
+	assert r1.kill(1) == None
+	assert r1.kill(0) == None
+	assert r1.kill(2) == None
+
+	with pytest.raises(ValueError):
+		r1.kill(1)
 
 
 def test_purchase():
