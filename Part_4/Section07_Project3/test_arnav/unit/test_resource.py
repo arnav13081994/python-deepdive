@@ -83,6 +83,8 @@ def test_claim():
 
 	# Success Cases
 	assert Resource("Intel Core i9-9900K", "Intel", 10, 0).claim(5) == None
+	assert Resource("Intel Core i9-9900K", "Intel", 10, 6).claim(3) == None
+	assert Resource("Intel Core i9-9900K", "Intel", 10, 6).claim(4) == None
 	assert Resource("Intel Core i9-9900K", "Intel", 10, 0).claim(0) == None
 	assert Resource("Intel Core i9-9900K", "Intel", 10, 0).claim(10) == None
 
@@ -108,6 +110,16 @@ def test_claim():
 	assert r1.claim(1) == None
 	assert r1.claim(0) == None
 	assert r1.claim(2) == None
+
+	with pytest.raises(ValueError):
+		r1.claim(1)
+
+	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 6)
+
+	assert r1.claim(2) == None
+	assert r1.claim(1) == None
+	assert r1.claim(0) == None
+	assert r1.claim(1) == None
 
 	with pytest.raises(ValueError):
 		r1.claim(1)
