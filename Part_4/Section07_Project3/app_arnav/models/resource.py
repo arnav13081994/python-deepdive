@@ -26,11 +26,11 @@ from numbers import Integral
 
 def f(a, b=object):
 	''' Diffrentiate between the case of the user providing None as a value and the user not providing a value at all'''
-	if id(None) == id(b):
+	if b is None:
 		print(f"User entered b as {b}")
-	elif id(b) == id(object):
-		print("User didn't enter any value for b")
-	elif id(b) != id(object):
+	elif b is object:
+		print("User didn't enter any value for b. Deafult value used.")
+	elif b is not object:
 		print(f"User entered b as {b}")
 
 
