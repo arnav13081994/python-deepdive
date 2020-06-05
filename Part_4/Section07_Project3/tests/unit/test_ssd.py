@@ -4,7 +4,7 @@ Command line: python -m pytest tests/unit/test_ssd.py
 """
 import pytest
 
-from app.models import inventory
+from ...app.models import inventory
 
 
 @pytest.fixture
