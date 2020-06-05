@@ -59,9 +59,11 @@ class Resource:
 		if not isinstance(arg, arg_type):
 			raise TypeError(f"Incorrect Type received. Expected {arg_type}")
 		elif min_value is not None and arg < min_value:
-			raise ValueError(f"Please stay within {min_value} and {max_value} for {category} instances.")
+			raise ValueError(f"Please stay above {min_value} {'and' + str(max_value) if max_value is not None else ''}"
+			                 f" for {category} instances.")
 		elif max_value is not None and arg > max_value:
-			raise ValueError(f"Please stay within {min_value} and {max_value} for {category} instances.")
+			raise ValueError(f"Please stay {'above' + str(min_value) if min_value is not None else ''} and below "
+			                 f"{max_value} for {category} instances.")
 		elif min_length is not None and len(arg.strip()) < min_length:
 			raise ValueError(f"Please input at least {min_length} character(s) for {category} instances.")
 
@@ -128,7 +130,6 @@ class CPU(Resource):
 
 	def __init__(self, name: str, manufacturer: str, total: int, allocated: int, cores: int,
 	             socket: str, power_watts: int):
-
 		# Calling super would automatically validate and initialise the instance
 		super().__init__(name, manufacturer, total, allocated)
 
@@ -152,6 +153,7 @@ class CPU(Resource):
 	@property
 	def power_watts(self):
 		return self._power_watts
+
 
 if __name__ == "__main__":
 	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 0)

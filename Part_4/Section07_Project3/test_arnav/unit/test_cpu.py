@@ -51,6 +51,18 @@ def test_class_init():
 	with pytest.raises(ValueError):
 		CPU("Intel Core i9-9900K", "Intel", 10, 0, -80, "AM4", 15)
 
+	with pytest.raises(TypeError):
+		CPU("Intel Core i9-9900K", "Intel", 10, 0, 2, "AM4", Decimal('10'))
+
+	with pytest.raises(TypeError):
+		CPU("Intel Core i9-9900K", "Intel", 10, 0, 4, "AM4", '15')
+
+	with pytest.raises(TypeError):
+		CPU("Intel Core i9-9900K", "Intel", 10, 0, 2+3j, "AM4", Decimal('10'))
+
+	with pytest.raises(TypeError):
+		CPU("Intel Core i9-9900K", "Intel", 10, 0, '-80', "AM4", 15)
+
 def test_readonly_cores():
 	r1 = CPU("Intel Core i9-9900K", "Intel", 10, 0, 2, "AM", 15)
 	with pytest.raises(AttributeError):
