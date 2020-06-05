@@ -44,8 +44,8 @@ class Resource:
 		self.validate(total, Integral, min_value=0)
 		self.validate(allocated, Integral, max_value=total, min_value=0)
 
-		self._name = name
-		self._manufacturer = manufacturer
+		self._name = name.strip()
+		self._manufacturer = manufacturer.strip()
 		self._total = total  # Current Total
 		self._allocated = allocated  # Current Allocated
 		self.category = type(self).__name__.lower()
@@ -62,7 +62,7 @@ class Resource:
 			raise ValueError(f"Please stay within {min_value} and {max_value} for {category} instances.")
 		elif max_value is not None and arg > max_value:
 			raise ValueError(f"Please stay within {min_value} and {max_value} for {category} instances.")
-		elif min_length is not None and len(arg) < min_length:
+		elif min_length is not None and len(arg.strip()) < min_length:
 			raise ValueError(f"Please input at least {min_length} character(s) for {category} instances.")
 
 	@property
@@ -138,7 +138,7 @@ class CPU(Resource):
 		self.validate(power_watts, Integral, min_value=1)
 
 		self._cores = cores
-		self._socket = socket
+		self._socket = socket.strip()
 		self._power_watts = power_watts
 
 	@property
@@ -155,6 +155,7 @@ class CPU(Resource):
 
 if __name__ == "__main__":
 	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 0)
+	r1 = Resource("Intel Core i9-9900K", " ", 10, 0)
 	print(r1)
 	type(r1)
 	print(r1.category)

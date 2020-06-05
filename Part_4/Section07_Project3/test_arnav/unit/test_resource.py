@@ -31,6 +31,9 @@ def test_class_init():
 		Resource("", "", 10, 0)
 
 	with pytest.raises(ValueError):
+		Resource("Nvidia", " ", 10, 0)
+
+	with pytest.raises(ValueError):
 		Resource("Nvidia GTX", "", 10, 0)
 
 	with pytest.raises(ValueError):
