@@ -126,38 +126,8 @@ class Resource:
 		return f'{self.category}({class_attr_dict})'
 
 
-class CPU(Resource):
-
-	def __init__(self, name: str, manufacturer: str, total: int, allocated: int, cores: int,
-	             socket: str, power_watts: int):
-		# Calling super would automatically validate and initialise the instance
-		super().__init__(name, manufacturer, total, allocated)
-
-		# validations
-		self.validate(socket, str, min_length=1)
-		self.validate(cores, Integral, min_value=1)
-		self.validate(power_watts, Integral, min_value=1)
-
-		self._cores = cores
-		self._socket = socket.strip()
-		self._power_watts = power_watts
-
-	@property
-	def cores(self):
-		return self._cores
-
-	@property
-	def socket(self):
-		return self._socket
-
-	@property
-	def power_watts(self):
-		return self._power_watts
-
-
 if __name__ == "__main__":
 	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 0)
-	r1 = Resource("Intel Core i9-9900K", " ", 10, 0)
-	print(r1)
+	print(r1.__repr__())
 	type(r1)
 	print(r1.category)

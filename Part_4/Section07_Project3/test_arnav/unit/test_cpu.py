@@ -13,8 +13,6 @@ Tests for class CPU:
 
 '''
 
-
-# TODO Write Unit tests for CPU Class
 # TODO Run Baptiste's Unit tests for CPU Class and correct any mistakes
 # TODO Run Baptiste's Unit tests for CPU Class and correct any mistakes
 # TODO Try to understand how we wrote his tests and use that knowledge to write uint tests for the remaining 3 classes
