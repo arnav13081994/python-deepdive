@@ -1,24 +1,20 @@
 '''
-
-
- Tests for base class Resource:
+Tests for base class Resource:
 
  ###### 1) Ensure Resource initialisation works as expected
  ###### 2) Ensure name, and manufacturer are read only attributes
  3) Make sure that the validator methods validate correctly.
- 4) Test claim
- 5) Test kill
- 6) Test freeup
- 7) Test purchase
- 8) Make sure total attribute gets updated correctly
- 9) Make sure allocated attribute gets updated correctly
+ ###### 4) Test claim
+ ###### 5) Test kill
+ ###### 6) Test freeup
+ ###### 7) Test purchase
+ ###### 8) Make sure total attribute gets updated correctly
+ ###### 9) Make sure allocated attribute gets updated correctly
 
 '''
-
 from numbers import Integral
 from decimal import Decimal
 import pytest
-
 from Part_4.Section07_Project3.app_arnav.models.resource import Resource
 
 def test_class_init():
@@ -82,11 +78,13 @@ def test_claim():
 	### Check Independent Updates
 
 	# Success Cases
-	assert Resource("Intel Core i9-9900K", "Intel", 10, 0).claim(5) == None
-	assert Resource("Intel Core i9-9900K", "Intel", 10, 6).claim(3) == None
-	assert Resource("Intel Core i9-9900K", "Intel", 10, 6).claim(4) == None
-	assert Resource("Intel Core i9-9900K", "Intel", 10, 0).claim(0) == None
-	assert Resource("Intel Core i9-9900K", "Intel", 10, 0).claim(10) == None
+	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 2)
+	r1.claim(5)
+	assert r1.allocated == 7
+
+	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 6)
+	r1.claim(4)
+	assert r1.allocated == 10
 
 
 	# Failure Cases
@@ -103,36 +101,29 @@ def test_claim():
 		Resource("Intel Core i9-9900K", "Intel", 10, 0).claim('11')
 
 	### Check Chained Updates (since this method mutates self)
-	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 0)
+	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 2)
 
-	assert r1.claim(5) == None
-	assert r1.claim(2) == None
-	assert r1.claim(1) == None
-	assert r1.claim(0) == None
-	assert r1.claim(2) == None
+	r1.claim(1)
+	assert r1.allocated == 3
 
-	with pytest.raises(ValueError):
-		r1.claim(1)
-
-	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 6)
-
-	assert r1.claim(2) == None
-	assert r1.claim(1) == None
-	assert r1.claim(0) == None
-	assert r1.claim(1) == None
+	r1.claim(2)
+	assert r1.allocated == 5
 
 	with pytest.raises(ValueError):
-		r1.claim(1)
-
-
+		r1.claim(6)
 
 def test_freeup():
 	''' Tests the freeup method of Resource Class'''
 	### Check Independent Updates
 
 	# Success Cases
-	assert Resource("Intel Core i9-9900K", "Intel", 10, 7).freeup(5) == None
-	assert Resource("Intel Core i9-9900K", "Intel", 10, 0).freeup(0) == None
+	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 7)
+	r1.freeup(5)
+	assert r1.allocated == 2
+
+	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 6)
+	r1.freeup(6)
+	assert r1.allocated == 0
 
 	# Failure Cases
 	with pytest.raises(ValueError):
@@ -156,26 +147,27 @@ def test_freeup():
 	### Check Chained Updates (since this method mutates self)
 	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 7)
 
-	assert r1.freeup(5) == None
-	assert r1.freeup(1) == None
-	assert r1.freeup(0) == None
-	assert r1.freeup(1) == None
+	r1.freeup(5)
+	assert r1.allocated == 2
+
+	r1.freeup(1)
+	assert r1.allocated == 1
 
 	with pytest.raises(ValueError):
-		r1.freeup(1)
-
+		r1.freeup(5)
 
 def test_kill():
 	''' Tests the kill method of Resource Class'''
 	### Check Independent Updates
 
 	# Success Cases
-	assert Resource("Intel Core i9-9900K", "Intel", 10, 0).kill(5) == None
-	assert Resource("Intel Core i9-9900K", "Intel", 10, 6).kill(6) == None
-	assert Resource("Intel Core i9-9900K", "Intel", 10, 6).kill(8) == None
-	assert Resource("Intel Core i9-9900K", "Intel", 10, 6).kill(4) == None
-	assert Resource("Intel Core i9-9900K", "Intel", 10, 0).kill(0) == None
-	assert Resource("Intel Core i9-9900K", "Intel", 10, 0).kill(10) == None
+	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 7)
+	r1.kill(5)
+	assert r1.total == 5
+
+	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 6)
+	r1.kill(2)
+	assert r1.total == 8
 
 	# Failure Cases
 	with pytest.raises(ValueError):
@@ -190,22 +182,50 @@ def test_kill():
 	with pytest.raises(TypeError):
 		Resource("Intel Core i9-9900K", "Intel", 10, 6).kill('11')
 
+
+	### Check Chained Updates (since this method mutates self)
+	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 7)
+
+	r1.kill(5)
+	assert r1.total == 5
+
+	r1.kill(1)
+	assert r1.total == 4
+
+	with pytest.raises(ValueError):
+		r1.kill(5)
+
+def test_purchased():
+	''' Tests the purchase method of Resource Class'''
+	### Check Independent Updates
+
+	# Success Cases
+	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 7)
+	r1.purchased(5)
+	assert r1.total == 15
+
+	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 6)
+	r1.purchased(0)
+	assert r1.total == 10
+
+	# Failure Cases
+	with pytest.raises(ValueError):
+		Resource("Intel Core i9-9900K", "Intel", 10, 6).purchased(-1)
+
+	with pytest.raises(TypeError):
+		Resource("Intel Core i9-9900K", "Intel", 10, 6).purchased(1.58)
+
+	with pytest.raises(TypeError):
+		Resource("Intel Core i9-9900K", "Intel", 10, 6).purchased('11')
+
 	### Check Chained Updates (since this method mutates self)
 	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 6)
 
-	assert r1.kill(5) == None
-	assert r1.kill(2) == None
-	assert r1.kill(1) == None
-	assert r1.kill(0) == None
-	assert r1.kill(2) == None
+	r1.purchased(5)
+	assert r1.total == 15
 
-	with pytest.raises(ValueError):
-		r1.kill(1)
-
-
-def test_purchase():
-	pass
-
+	r1.purchased(2)
+	assert r1.total == 17
 
 
 def test_validate():
