@@ -19,7 +19,7 @@ Tests for class CPU:
 
 from decimal import Decimal
 import pytest
-from Part_4.Section07_Project3.app_arnav.models.resource import CPU
+from Part_4.Section07_Project3.app_arnav.models.cpu import CPU
 
 def test_class_init():
 	''' Tests class Init for various success and failure cases'''
