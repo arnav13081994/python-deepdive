@@ -1,37 +1,9 @@
 '''
 This is the base class, Resource
 
-Functionality:
-
-Properties:
-	name : user-friendly name of resource instance (e.g.Intel Core i9-9900K)
-	manufacturer - resource instance manufacturer (e.g. Nvidia)
-	total : inventory total (how many are in the inventory pool)
-	allocated : number allocated (how many are already in use)
-	category - computed property that returns a lower case version of the class name
-
-Methods:
-	claim(n) : method to take n resources from the pool (as long as inventory is available)
-	freeup(n) : method to return n resources to the pool (e.g. disassembled some builds)
-	died(n) : method to return and permanently remove inventory from the pool (e.g. they broke something) - as long as total available allows it
-	purchased(n) - method to add inventory to the pool (e.g. they purchased a new CPU)
-
-Dunders:
-	a __str__ representation that just returns the resource name
-	a mode detailed __repr__ implementation
 '''
 
 from numbers import Integral
-
-
-def f(a, b=object):
-	''' Diffrentiate between the case of the user providing None as a value and the user not providing a value at all'''
-	if b is None:
-		print(f"User entered b as {b}")
-	elif b is object:
-		print("User didn't enter any value for b. Deafult value used.")
-	elif b is not object:
-		print(f"User entered b as {b}")
 
 
 class Resource:
@@ -134,4 +106,3 @@ if __name__ == "__main__":
 	print(r1.__repr__())
 	type(r1)
 	print(r1.category)
-
