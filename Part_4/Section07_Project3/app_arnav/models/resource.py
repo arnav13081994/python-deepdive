@@ -59,7 +59,7 @@ class Resource:
 		if not isinstance(arg, arg_type):
 			raise TypeError(f"Incorrect Type received. Expected {arg_type}")
 		elif min_value is not None and arg < min_value:
-			raise ValueError(f"Please stay above {min_value} {'and' + str(max_value) if max_value is not None else ''}"
+			raise ValueError(f"Please stay above {min_value} {'and ' + str(max_value) if max_value is not None else ''}"
 			                 f" for {category} instances.")
 		elif max_value is not None and arg > max_value:
 			raise ValueError(f"Please stay {'above' + str(min_value) if min_value is not None else ''} and below "
@@ -85,6 +85,8 @@ class Resource:
 
 	@allocated.setter
 	def allocated(self, value):
+		# if value < 0:
+		# 	value = 0
 		self.validate(value, Integral, max_value=self.total, min_value=0)
 		self._allocated = value
 
@@ -109,9 +111,10 @@ class Resource:
 
 	def kill(self, n):
 		'''Will return and permanently remove inventory from the pool (e.g. they broke something) - as
-		 long as total available allows it'''
+		 long as total available allows it and we first remove all allocated resources'''
 		self.validate(n, Integral, min_value=0, max_value=self.total)
 		self.total -= n
+		self.freeup(n if n < self.allocated else self.allocated)
 
 	def purchased(self, n):
 		'''Will add inventory to the pool (e.g. they purchased a new CPU) '''
@@ -131,3 +134,4 @@ if __name__ == "__main__":
 	print(r1.__repr__())
 	type(r1)
 	print(r1.category)
+

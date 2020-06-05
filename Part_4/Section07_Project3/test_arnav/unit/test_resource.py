@@ -156,10 +156,17 @@ def test_kill():
 	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 7)
 	r1.kill(5)
 	assert r1.total == 5
+	assert r1.allocated == 2
 
 	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 6)
 	r1.kill(2)
 	assert r1.total == 8
+	assert r1.allocated == 4
+
+	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 6)
+	r1.kill(8)
+	assert r1.total == 2
+	assert r1.allocated == 0
 
 	# Failure Cases
 	with pytest.raises(ValueError):
@@ -174,18 +181,20 @@ def test_kill():
 	with pytest.raises(TypeError):
 		Resource("Intel Core i9-9900K", "Intel", 10, 6).kill('11')
 
-
 	### Check Chained Updates (since this method mutates self)
 	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 7)
 
 	r1.kill(5)
 	assert r1.total == 5
+	assert r1.allocated == 2
 
 	r1.kill(1)
 	assert r1.total == 4
+	assert r1.allocated == 1
 
 	with pytest.raises(ValueError):
 		r1.kill(5)
+		assert r1.allocated == 0
 
 def test_purchased():
 	''' Tests the purchase method of Resource Class'''
