@@ -23,17 +23,40 @@ Dunders:
 Helper Functions: Maybe put this in a seperate module if I am going to reuse across class instances like validators.py
 '''
 
+from numbers import Integral
+
+
 
 class Resource:
 
 
-	def __init__(self, name, manufacturer, total, allocated):
-		# TODO Add Validator code to make sure the instance attributes get set correctly.
+
+	def __init__(self, name: str, manufacturer: str, total: int, allocated: int):
+
+		# validations
+		self.validate(name, str)
+		self.validate(manufacturer, str)
+		self.validate(total, Integral, min_value=0)
+		self.validate(allocated, Integral, max_value=total, min_value=0)
+
 		self._name = name
 		self._manufacturer = manufacturer
 		self._total = total # Current Total
 		self._allocated = allocated # Current Allocated
-		self.category = self.__class__.__name__.lower()
+		self.category = type(self).__name__.lower()
+
+
+	def validate(self, arg, arg_type, max_value=None, min_value=None):
+		'''
+		 need to validate instance attribute for their type, are they between bounds (both upper and lower optional)
+		 '''
+		if not isinstance(arg, arg_type):
+			raise TypeError(f"Incorrect Type received. Expected {arg_type}")
+		elif min_value and arg < min_value:
+			raise ValueError(f"Please stay within {min_value} and {max_value} for {self.category} instances.")
+		elif max_value and arg > max_value:
+			raise ValueError(f"Please stay within {min_value} and {max_value} for {self.category} instances.")
+
 
 	@property
 	def allocated(self):
@@ -53,52 +76,49 @@ class Resource:
 
 	@allocated.setter
 	def allocated(self, value):
-		# TODO Add Validator code to make sure the instance attributes get set correctly.
+		self.validate(value, Integral, max_value=self.total, min_value=0)
 		self._allocated = value
 
 	@total.setter
 	def total(self, value):
-		# TODO Add Validator code to make sure the instance attributes get set correctly.
+		self.validate(value, Integral, min_value=0)
 		self._total = value
 
 
 	def claim(self, n):
-		''' Will take n resources from the pool (as long as inventory is available) '''
+		""" Will take n resources from the pool (as long as inventory is available) """
 		# Check number of available resources in the pool. If sufficient then claim, and update it.
-		if n <= (self.total - self.allocated):
-			self.allocated += n
-		raise ValueError("Can't claim more resources than currently available.")
+
+		self.validate(n, Integral, min_value=0, max_value=self.total - self.allocated)
+		self.allocated += n
+
 
 	def freeup(self, n):
-		''' Will return n resources to the pool (e.g. disassembled some builds) '''
+		""" Will return n resources to the pool (e.g. disassembled some builds) """
 		# Check number of available resources in the pool. If sufficient then claim, and update it.
-		if n <= self.allocated:
-			self.allocated -= n
-		raise ValueError("Can't freeup more resources than currently allocated.")
+
+		self.validate(n, Integral, min_value=0, max_value=self.allocated)
+		self.allocated -= n
 
 
-	def died(self, n):
+	def kill(self, n):
 		'''Will return and permanently remove inventory from the pool (e.g. they broke something) - as
 		 long as total available allows it'''
-
-		if n <= self.total:
-			self.total -= n
-		raise ValueError("Can't kill more resources than available")
+		self.validate(n, Integral, min_value=0, max_value=self.total)
+		self.total -= n
 
 
 	def purchased(self, n):
 		'''Will add inventory to the pool (e.g. they purchased a new CPU) '''
+		self.validate(n, Integral, min_value=0)
 		self.total += n
-
-
-
 
 	def __str__(self):
 		return self.name
 
 	def __repr__(self):
-		kwargs = {k.strip('_'): v for k, v in vars(self).items()}
-		return f'{self.category}({kwargs})'
+		class_attr_dict = {k.strip('_'): v for k, v in vars(self).items()}
+		return f'{self.category}({class_attr_dict})'
 
 
 
@@ -106,4 +126,5 @@ if __name__ == "__main__":
 	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 0)
 	print(r1)
 	type(r1)
+	print(r1.category)
 
