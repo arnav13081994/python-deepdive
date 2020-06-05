@@ -19,23 +19,30 @@ Methods:
 Dunders:
 	a __str__ representation that just returns the resource name
 	a mode detailed __repr__ implementation
-
-Helper Functions: Maybe put this in a seperate module if I am going to reuse across class instances like validators.py
 '''
 
 from numbers import Integral
 
 
+def f(a, b=object):
+	''' Diffrentiate between the case of the user providing None as a value and the user not providing a value at all'''
+	if id(None) == id(b):
+		print(f"User entered b as {b}")
+	elif id(b) == id(object):
+		print("User didn't enter any value for b")
+	elif id(b) != id(object):
+		print(f"User entered b as {b}")
+
+
+
 
 class Resource:
-
-
 
 	def __init__(self, name: str, manufacturer: str, total: int, allocated: int):
 
 		# validations
-		self.validate(name, str)
-		self.validate(manufacturer, str)
+		self.validate(name, str, min_length=1)
+		self.validate(manufacturer, str, min_length=1)
 		self.validate(total, Integral, min_value=0)
 		self.validate(allocated, Integral, max_value=total, min_value=0)
 
@@ -46,16 +53,21 @@ class Resource:
 		self.category = type(self).__name__.lower()
 
 
-	def validate(self, arg, arg_type, max_value=None, min_value=None):
+	def validate(self, arg, arg_type, max_value=None, min_value=None, min_length=None):
 		'''
 		 need to validate instance attribute for their type, are they between bounds (both upper and lower optional)
 		 '''
+
+		category = type(self).__name__.lower()
 		if not isinstance(arg, arg_type):
 			raise TypeError(f"Incorrect Type received. Expected {arg_type}")
-		elif min_value and arg < min_value:
-			raise ValueError(f"Please stay within {min_value} and {max_value} for {self.category} instances.")
-		elif max_value and arg > max_value:
-			raise ValueError(f"Please stay within {min_value} and {max_value} for {self.category} instances.")
+		elif min_value is not None and arg < min_value:
+			raise ValueError(f"Please stay within {min_value} and {max_value} for {category} instances.")
+		elif max_value is not None and arg > max_value:
+			raise ValueError(f"Please stay within {min_value} and {max_value} for {category} instances.")
+		elif min_length is not None and len(arg) < min_length:
+			raise ValueError(f"Please input at least {min_length} character(s) for {category} instances.")
+
 
 
 	@property
@@ -113,8 +125,8 @@ class Resource:
 		self.validate(n, Integral, min_value=0)
 		self.total += n
 
-	def __str__(self):
-		return self.name
+	# def __str__(self):
+	# 	return self.name
 
 	def __repr__(self):
 		class_attr_dict = {k.strip('_'): v for k, v in vars(self).items()}
@@ -123,8 +135,9 @@ class Resource:
 
 
 if __name__ == "__main__":
-	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 0)
-	print(r1)
-	type(r1)
-	print(r1.category)
+	# r1 = Resource("Intel Core i9-9900K", "Intel", 10, 0)
+	r1 = Resource("Intel Core i9-9900K", "", 10, 0)
+	# print(r1)
+	# type(r1)
+	# print(r1.category)
 
