@@ -34,8 +34,6 @@ def f(a, b=object):
 		print(f"User entered b as {b}")
 
 
-
-
 class Resource:
 
 	def __init__(self, name: str, manufacturer: str, total: int, allocated: int):
@@ -48,10 +46,9 @@ class Resource:
 
 		self._name = name
 		self._manufacturer = manufacturer
-		self._total = total # Current Total
-		self._allocated = allocated # Current Allocated
+		self._total = total  # Current Total
+		self._allocated = allocated  # Current Allocated
 		self.category = type(self).__name__.lower()
-
 
 	def validate(self, arg, arg_type, max_value=None, min_value=None, min_length=None):
 		'''
@@ -67,8 +64,6 @@ class Resource:
 			raise ValueError(f"Please stay within {min_value} and {max_value} for {category} instances.")
 		elif min_length is not None and len(arg) < min_length:
 			raise ValueError(f"Please input at least {min_length} character(s) for {category} instances.")
-
-
 
 	@property
 	def allocated(self):
@@ -96,14 +91,12 @@ class Resource:
 		self.validate(value, Integral, min_value=0)
 		self._total = value
 
-
 	def claim(self, n):
 		""" Will take n resources from the pool (as long as inventory is available) """
 		# Check number of available resources in the pool. If sufficient then claim, and update it.
 
 		self.validate(n, Integral, min_value=0, max_value=self.total - self.allocated)
 		self.allocated += n
-
 
 	def freeup(self, n):
 		""" Will return n resources to the pool (e.g. disassembled some builds) """
@@ -112,13 +105,11 @@ class Resource:
 		self.validate(n, Integral, min_value=0, max_value=self.allocated)
 		self.allocated -= n
 
-
 	def kill(self, n):
 		'''Will return and permanently remove inventory from the pool (e.g. they broke something) - as
 		 long as total available allows it'''
 		self.validate(n, Integral, min_value=0, max_value=self.total)
 		self.total -= n
-
 
 	def purchased(self, n):
 		'''Will add inventory to the pool (e.g. they purchased a new CPU) '''
@@ -133,10 +124,37 @@ class Resource:
 		return f'{self.category}({class_attr_dict})'
 
 
+class CPU(Resource):
+
+	def __init__(self, name: str, manufacturer: str, total: int, allocated: int, cores: int,
+	             socket: str, power_watts: int):
+
+		# Calling super would automatically validate and initialise the instance
+		super().__init__(name, manufacturer, total, allocated)
+
+		# validations
+		self.validate(socket, str, min_length=1)
+		self.validate(cores, Integral, min_value=1)
+		self.validate(power_watts, Integral, min_value=1)
+
+		self._cores = cores
+		self._socket = socket
+		self._power_watts = power_watts
+
+	@property
+	def cores(self):
+		return self._cores
+
+	@property
+	def socket(self):
+		return self._socket
+
+	@property
+	def power_watts(self):
+		return self._power_watts
 
 if __name__ == "__main__":
 	r1 = Resource("Intel Core i9-9900K", "Intel", 10, 0)
 	print(r1)
 	type(r1)
 	print(r1.category)
-

@@ -1,21 +1,21 @@
 '''
-Tests for base class Resource:
+Tests for class CPU:
 
- ###### 1) Ensure Resource initialisation works as expected
- ###### 2) Ensure name, and manufacturer are read only attributes
- ###### 3) Make sure that the validator methods validate correctly.
- ###### 4) Test claim
- ###### 5) Test kill
- ###### 6) Test freeup
- ###### 7) Test purchase
- ###### 8) Make sure total attribute gets updated correctly
- ###### 9) Make sure allocated attribute gets updated correctly
+ 1) Ensure Resource initialisation works as expected
+ 2) Ensure name, and manufacturer are read only attributes
+ 3) Make sure that the validator methods validate correctly.
+ 4) Test claim
+ 5) Test kill
+ 6) Test freeup
+ 7) Test purchase
+ 8) Make sure total attribute gets updated correctly
+ 9) Make sure allocated attribute gets updated correctly
 
 '''
 
 from decimal import Decimal
 import pytest
-from Part_4.Section07_Project3.app_arnav.models.resource import Resource
+from Part_4.Section07_Project3.app_arnav.models.resource import CPU
 
 def test_class_init():
 	''' Tests class Init for various success and failure cases'''

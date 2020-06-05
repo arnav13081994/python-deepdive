@@ -4,8 +4,7 @@ Command line: python -m pytest tests/unit/test_cpu.py
 """
 import pytest
 
-from ...app.models import inventory
-
+from Part_4.Section07_Project3.app.models import inventory
 
 @pytest.fixture
 def cpu_values():
