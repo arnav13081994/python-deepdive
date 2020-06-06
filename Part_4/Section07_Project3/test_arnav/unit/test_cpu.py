@@ -1,21 +1,9 @@
 '''
 Tests for class CPU:
 
- 1) Ensure CPU initialisation works as expected
- 2) Ensure cores, socket, and power_watts are read only attributes
- 3) Make sure that the validator methods validate correctly.
- 4) Test claim
- 5) Test kill
- 6) Test freeup
- 7) Test purchase
- 8) Make sure total attribute gets updated correctly
- 9) Make sure allocated attribute gets updated correctly
-
 '''
 
-# TODO Run Baptiste's Unit tests for CPU Class and correct any mistakes
-# TODO Run Baptiste's Unit tests for CPU Class and correct any mistakes
-# TODO Try to understand how we wrote his tests and use that knowledge to write uint tests for the remaining 3 classes
+# TODO Try to understand how we wrote his tests and use that knowledge to write unit tests for the remaining 3 classes
 
 from decimal import Decimal
 import pytest
