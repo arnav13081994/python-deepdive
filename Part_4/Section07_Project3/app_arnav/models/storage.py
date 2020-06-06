@@ -21,3 +21,4 @@ if __name__ == "__main__":
 	s1 = Storage("Thumbdrive", "Sandisk", 10, 3, 512)
 	type(s1)
 	print(s1.category)
+	s1.capacity_GB = 256
