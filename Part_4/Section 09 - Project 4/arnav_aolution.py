@@ -2,8 +2,8 @@
 
 Write 2 data descriptors:
 
-1) IntegerField --> Only allows Integral numbers, between min and max value
-2) CharField --> Only allows strings with a min and max length
+1) IntegerField --> Only allows Integral numbers, between minimum and maximum value
+2) CharField --> Only allows strings with a minimum and maximum length
 
 
 The class that may use these 2 data descriptors may or may not use slots and may or may not be hasheable.
@@ -12,7 +12,7 @@ The class that may use these 2 data descriptors may or may not use slots and may
 
 Structure:
 
-1) main class --> ValidType that you can extend and define defaults of min and max lengths and value and expected types
+1) main class --> ValidType that you can extend and define defaults of minimum and maximum lengths and value and expected types
 
 
 '''
@@ -24,11 +24,12 @@ import ctypes
 
 class ValidType:
 
-	def __init__(self, min=None, max=None):
-		assert isinstance(min, Real), "Minimum Value must be a Real Number"
-		assert isinstance(max, Real), "Maximum Value must be a Real Number"
-		self.min = min
-		self.max = max
+	def __init__(self, minimum=None, maximum=None):
+		assert isinstance(minimum, Real), "Minimum Value must be a Real Number"
+		assert isinstance(maximum, Real), "Maximum Value must be a Real Number"
+		self.minimum = minimum
+		self.maximum = maximum
+		self.values = {}
 
 	def _finalise_obj(self, weakref_obj):
 		''' Looks up the object that had its last strong ref removed and also removes the weak ref from the data
@@ -57,20 +58,15 @@ class IntegerField(ValidType):
 	''' This is a data descriptor that does validation and raises appropriate errors that doesn't assume that
 	 the class that uses this has __dict__'''
 
-	def __init__(self, min=None, max=None):
-
-		super().__init__(min, max)
-		self.values = {}
-
 	def __set__(self, instance, value):
 
 		# Validations
 		if not isinstance(value, Integral):
 			raise TypeError(f'{self.name} must be of type {type(self).__name__}.')
-		elif self.min is not None and value < self.min:
-			raise ValueError(f'{self.name} must be greater than {self.min}.')
-		elif self.max is not None and value > self.max:
-			raise ValueError(f'{self.name} must be less than {self.max}.')
+		elif self.minimum is not None and value < self.minimum:
+			raise ValueError(f'{self.name} must be greater than {self.minimum}.')
+		elif self.maximum is not None and value > self.maximum:
+			raise ValueError(f'{self.name} must be less than {self.maximum}.')
 
 		self.values[id(instance)] = (ref(instance, self._finalise_obj), value)
 
@@ -80,20 +76,21 @@ class CharField(ValidType):
 	''' This is a data descriptor that does validation and raises appropriate errors that doesn't assume that
 	 the class that uses this has __dict__'''
 
-	def __init__(self, min=None, max=None):
+	def __init__(self, minimum=0, maximum=None):
+		minimum = minimum or 0 # In case the user enters Minimum as None
+		minimum = max(minimum, 0)
+		super().__init__(minimum, maximum)
 
-		super().__init__(min, max)
-		self.values = {}
 
 	def __set__(self, instance, value):
 
 		# Validations
 		if not isinstance(value, str):
 			raise TypeError(f'{self.name} must be of type {type(self).__name__}.')
-		elif self.min is not None and len(value) < self.min:
-			raise ValueError(f'{self.name} must have at least {self.min} characters.')
-		elif self.max is not None and len(value) > self.max:
-			raise ValueError(f'{self.name} must have fewer than {self.max} characters.')
+		elif self.minimum is not None and len(value) < self.minimum:
+			raise ValueError(f'{self.name} must have at least {self.minimum} characters.')
+		elif self.maximum is not None and len(value) > self.maximum:
+			raise ValueError(f'{self.name} must have fewer than {self.maximum} characters.')
 
 		self.values[id(instance)] = (ref(instance, self._finalise_obj), value)
 
@@ -107,7 +104,7 @@ if __name__ == "__main__":
 	class Person:
 		''' Initialises the Person class to use the IntegerField and CharField data descriptors'''
 		__slots__ = ('__weakref__',)
-		name = CharField(0.8+5j, 255)
+		name = CharField(-10, 255)
 		age = IntegerField(0, 50.12)
 
 		def __init__(self, name, age):
@@ -116,3 +113,10 @@ if __name__ == "__main__":
 
 
 	p = Person("Arnav Choudhury", 25)
+
+	pid = id(p)
+	print(pid, get_strong_ref_ct(pid), p.name, p.age)
+	p.name, p.age = "Pranav", 31
+	print(pid, get_strong_ref_ct(pid), p.name, p.age)
+	del p
+	print(pid, get_strong_ref_ct(pid))
