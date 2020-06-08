@@ -5,19 +5,9 @@ Write 2 data descriptors:
 1) IntegerField --> Only allows Integral numbers, between minimum and maximum value
 2) CharField --> Only allows strings with a minimum and maximum length
 
-
-The class that may use these 2 data descriptors may or may not use slots and may or may not be hasheable.
-
-
-
-Structure:
-
-1) main class --> ValidType that you can extend and define defaults of minimum and maximum lengths and value and expected types
-
-
 '''
 
-from numbers import Integral, Real
+from numbers import Integral
 from weakref import ref
 import ctypes
 
@@ -25,8 +15,16 @@ import ctypes
 class ValidType:
 
 	def __init__(self, minimum=None, maximum=None):
-		assert isinstance(minimum, Real), "Minimum Value must be a Real Number"
-		assert isinstance(maximum, Real), "Maximum Value must be a Real Number"
+
+		if minimum is not None and not isinstance(minimum, Integral):
+			raise TypeError("Minimum must be of type int")
+
+		if maximum is not None and not isinstance(maximum, Integral):
+			raise TypeError("Maximum must be of type int")
+
+		if maximum is not None and minimum is not None:
+			assert maximum >= minimum, "Maximum must be greater than Minimum"
+
 		self.minimum = minimum
 		self.maximum = maximum
 		self.values = {}
@@ -34,6 +32,7 @@ class ValidType:
 	def _finalise_obj(self, weakref_obj):
 		''' Looks up the object that had its last strong ref removed and also removes the weak ref from the data
 		descriptor instance dict.'''
+
 		key = ''
 		for k, v in self.values.items():
 			if v[0] is weakref_obj:
@@ -58,6 +57,7 @@ class IntegerField(ValidType):
 	''' This is a data descriptor that does validation and raises appropriate errors that doesn't assume that
 	 the class that uses this has __dict__'''
 
+
 	def __set__(self, instance, value):
 
 		# Validations
@@ -71,16 +71,9 @@ class IntegerField(ValidType):
 		self.values[id(instance)] = (ref(instance, self._finalise_obj), value)
 
 
-
 class CharField(ValidType):
 	''' This is a data descriptor that does validation and raises appropriate errors that doesn't assume that
 	 the class that uses this has __dict__'''
-
-	def __init__(self, minimum=0, maximum=None):
-		minimum = minimum or 0 # In case the user enters Minimum as None
-		minimum = max(minimum, 0)
-		super().__init__(minimum, maximum)
-
 
 	def __set__(self, instance, value):
 
@@ -93,7 +86,6 @@ class CharField(ValidType):
 			raise ValueError(f'{self.name} must have fewer than {self.maximum} characters.')
 
 		self.values[id(instance)] = (ref(instance, self._finalise_obj), value)
-
 
 
 def get_strong_ref_ct(address):
