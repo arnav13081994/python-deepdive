@@ -96,8 +96,8 @@ if __name__ == "__main__":
 	class Person:
 		''' Initialises the Person class to use the IntegerField and CharField data descriptors'''
 		__slots__ = ('__weakref__',)
-		name = CharField(-10, 255)
-		age = IntegerField(0, 50.12)
+		name = CharField(100, 55)
+		age = IntegerField(0, 50)
 
 		def __init__(self, name, age):
 			self.name = name

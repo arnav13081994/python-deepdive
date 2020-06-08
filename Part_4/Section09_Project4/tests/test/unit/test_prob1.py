@@ -16,8 +16,9 @@ B) Test Descriptor Effectiveness
 
 '''
 
-
 import pytest
+from random import randint
+
 from Part_4.Section09_Project4.arnav_aolution import IntegerField, CharField
 
 
@@ -64,8 +65,9 @@ def test_min_only_valid(char_min, int_min, name, age):
 	p1_int, p1_char = cls_int(age), cls_char(name)
 	assert ((p1_int.age, p1_char.name) == (age, name))
 
-	(p1_int.age, p1_char.name) = (age+10, name+'random')
-	assert ((p1_int.age, p1_char.name) == (age+10, name+'random'))
+	(p1_int.age, p1_char.name) = (age + 10, name + 'random')
+	assert ((p1_int.age, p1_char.name) == (age + 10, name + 'random'))
+
 
 @pytest.mark.parametrize('char_min, int_min', [('1', '0'), ([1.9], [9.9]), (1 + 2j, 3 + 4j), (1.9, 9.9), (-3.4, -9.9)])
 def test_min_only_invalid(char_min, int_min):
@@ -88,8 +90,8 @@ def test_max_only_valid(char_max, int_max, name, age):
 	p1_int, p1_char = cls_int(age), cls_char(name)
 	assert ((p1_int.age, p1_char.name) == (age, name))
 
-	(p1_int.age, p1_char.name) = (age-10, name[:-1])
-	assert ((p1_int.age, p1_char.name) == (age-10, name[:-1]))
+	(p1_int.age, p1_char.name) = (age - 10, name[:-1])
+	assert ((p1_int.age, p1_char.name) == (age - 10, name[:-1]))
 
 
 @pytest.mark.parametrize('char_max, int_max', [('1', '0'), ([1.9], [9.9]), (1 + 2j, 3 + 4j), (1.9, 9.9), (-3.4, -9.9)])
@@ -99,22 +101,45 @@ def test_max_only_invalid(char_max, int_max):
 		assert _setup_wslots_(char_max=char_max, int_max=int_max)
 
 
-#
-#
-# @pytest.mark.parametrize('char_max, int_max', [('1', '0'), ([1.9], [9.9]), (1 + 2j, 3 + 4j)])
-# def test_min_and_max_valid(char_max, int_max):
-# 	''' Test for when the user inputs both the min and max values'''
-# 	with pytest.raises(TypeError):
-# 		assert _setup_wslots_(char_max=char_max, int_max=int_max)
+@pytest.mark.parametrize('char_min, char_max, int_min, int_max',
+                         [
+	                         (1, 100, -10, 20),
+	                         (0, 10, 0, 0),
+	                         (0, 1, 0, 0),
+                         ])
+def test_min_and_max_valid(char_min, char_max, int_min, int_max):
+	''' Test for when the user inputs both the min and max values'''
+	assert _setup_wslots_(char_min=char_min, int_min=int_min, char_max=char_max, int_max=int_max)
+
+	cls_int, cls_char = _setup_wslots_(char_min=char_min, int_min=int_min, char_max=char_max, int_max=int_max)
+
+	# Run the assertion tests 10 times
+	for _ in range(10):
+		age = randint(int_min, int_max)
+		name = 'a' * randint(char_min, char_max)
+
+		assert cls_int(age), cls_char(name)
+
+		p1_int, p1_char = cls_int(age), cls_char(name)
+		assert ((p1_int.age, p1_char.name) == (age, name))
+
+		random_age = int((int_max + int_min)/2)
+		random_name = 'a' * randint(char_min, int((char_max+char_min)/2))
+
+		(p1_int.age, p1_char.name) = (int((int_max + int_min)/2), random_name)
+		assert ((p1_int.age, p1_char.name) == (random_age, random_name))
 
 
+'''
+char_min, char_max, int_min, int_max, name, age
+()
+	(1, 100, -10, 20, 'a', 10),
+	(1, 100, -10, 20, 'arnav', -10),
+	(1, 100, -10, 20, 'arnav choudhury', 20),
+	 
 
 
-
-
-
-
-
+'''
 
 
 def test_no_bounds():
