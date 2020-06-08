@@ -19,7 +19,7 @@ B) Test Descriptor Effectiveness
 import pytest
 from random import randint
 
-from Part_4.Section09_Project4.arnav_aolution import IntegerField, CharField
+from Part_4.Section09_Project4.arnav_solution import IntegerField, CharField
 
 
 def _setup_wslots_(char_min=None, char_max=None, int_min=None, int_max=None):

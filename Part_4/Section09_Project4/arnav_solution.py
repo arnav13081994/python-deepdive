@@ -12,7 +12,7 @@ from weakref import ref
 import ctypes
 
 
-class ValidType:
+class BaseValidator:
 
 	def __init__(self, minimum=None, maximum=None):
 
@@ -53,7 +53,7 @@ class ValidType:
 		return val
 
 
-class IntegerField(ValidType):
+class IntegerField(BaseValidator):
 	''' This is a data descriptor that does validation and raises appropriate errors that doesn't assume that
 	 the class that uses this has __dict__'''
 
@@ -71,7 +71,7 @@ class IntegerField(ValidType):
 		self.values[id(instance)] = (ref(instance, self._finalise_obj), value)
 
 
-class CharField(ValidType):
+class CharField(BaseValidator):
 	''' This is a data descriptor that does validation and raises appropriate errors that doesn't assume that
 	 the class that uses this has __dict__'''
 
