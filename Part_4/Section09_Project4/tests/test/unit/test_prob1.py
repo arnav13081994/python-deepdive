@@ -128,20 +128,3 @@ def test_min_and_max_valid(char_min, char_max, int_min, int_max):
 
 		(p1_int.age, p1_char.name) = (int((int_max + int_min)/2), random_name)
 		assert ((p1_int.age, p1_char.name) == (random_age, random_name))
-
-
-'''
-char_min, char_max, int_min, int_max, name, age
-()
-	(1, 100, -10, 20, 'a', 10),
-	(1, 100, -10, 20, 'arnav', -10),
-	(1, 100, -10, 20, 'arnav choudhury', 20),
-	 
-
-
-'''
-
-
-def test_no_bounds():
-	''' Test for when the user inputs neither the min nor the max value'''
-	pass
