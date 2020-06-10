@@ -39,7 +39,6 @@ def filter_data(next_gen, *filter_words):
 	while True:
 		row = yield
 		for filter_word in filter_words:
-			# print(f"Row: {row}, Filter Word:{filter_word}")
 			if filter_word not in row[0]:
 				break
 		else:
@@ -56,6 +55,10 @@ if __name__ == "__main__":
 	# Set up the filters
 	filter_data = filter_data(print_data, 'Chevrolet', 'Carlo', 'Landau')
 
+	data = data_parser(
+		'/Users/arnavchoudhury/Desktop/Coding/Python/python-deepdive/Part_2/Section13_Project6/app/cars.csv'
+	)
+
 	# Parse and Read the data
-	for _ in data_parser('/Users/arnavchoudhury/Desktop/Coding/Python/python-deepdive/Part_2/Section13_Project6/app/cars.csv'):
+	for _ in data:
 		pass
